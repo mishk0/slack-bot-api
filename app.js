@@ -4,52 +4,72 @@ var Vow = require('vow');
 var qs = require('querystring');
 var fs = require('fs');
 var extend = require('extend');
+var WebSocket = require('ws');
 
 var _cache = {};
-var token;
 
-function getChannels() {
-    return _get('channels.list');
+function Bot(params) {
+    this.token = params.token;
+    this.name = params.name;
+
+    assert(params.token, 'token must be defined');
+    this.login();
 }
 
-function getUsers() {
-    return _get('users.list');
-}
+Bot.prototype.login = function() {
+    this._api('rtm.start').then(function(data) {
+        this.wsUrl = data.url;
 
-function getUser(name) {
-    return getUsers().then(function(data) {
+        this.connect();
+    }.bind(this))
+};
+
+Bot.prototype.connect = function() {
+    this.ws = new WebSocket(this.wsUrl);
+    console.log(this.ws);
+};
+
+Bot.prototype.getChannels = function() {
+    return this._api('channels.list');
+};
+
+Bot.prototype.getUsers = function() {
+    return this._api('users.list');
+};
+
+Bot.prototype.getUser = function(name) {
+    return this.getUsers().then(function(data) {
         return _find(data.members, { name: name});
     });
-}
+};
 
-function getChannel(name) {
-    return getChannels().then(function(data) {
+Bot.prototype.getChannel = function(name) {
+    return this.getChannels().then(function(data) {
         return _find(data.channels, { name: name});
     });
-}
+};
 
-function getChatId(name) {
-    return getUser(name).then(function(data) {
+Bot.prototype.getChatId = function(name) {
+    return this.getUser(name).then(function(data) {
 
-        return _get('im.open', {user: data.id});
-    }).then(function(data) {
+        return this._api('im.open', {user: data.id});
+    }.bind(this)).then(function(data) {
         return data.channel.id;
     });
-}
+};
 
-function postMessage(name, text) {
-    return getChatId(name).then(function(chatId) {
-        return _get('chat.postMessage', {
+Bot.prototype.postMessage = function(name, text) {
+    return this.getChatId(name).then(function(chatId) {
+        return this._api('chat.postMessage', {
             text: text,
-            channel: chatId
+            channel: chatId,
+            username: this.name
         })
-    })
-}
+    }.bind(this))
+};
 
-function _get(method_name, params) {
-    token = token || fs.readFileSync('token').toString();
-
-    params = extend(params || {}, {token: token});
+Bot.prototype._api = function(method_name, params) {
+    params = extend(params || {}, {token: this.token});
 
     var path = method_name + '?' + qs.stringify(params);
 
@@ -81,7 +101,7 @@ function _get(method_name, params) {
             resolve(body);
         })
     });
-}
+};
 
 function _find(arr, params) {
     var result = {};
@@ -95,11 +115,10 @@ function _find(arr, params) {
     return result;
 }
 
-module.exports = {
-    getChannels: getChannels,
-    getUsers: getUsers,
-    getChannel: getChannel,
-    getChatId: getChatId,
-    postMessage: postMessage,
-    getUser: getUser
-};
+function assert(condition, error) {
+    if (!condition) {
+        throw new Error('[Slack Bot Error] ' + error);
+    }
+}
+
+module.exports = Bot;

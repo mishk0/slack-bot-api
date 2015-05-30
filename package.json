@@ -8,11 +8,11 @@
   },
   "author": "mishk0",
   "license": "ISC",
-
   "dependencies": {
     "lodash": "^3.9.3",
     "extend": "^2.0.1",
     "request": "^2.56.0",
-    "vow": "^0.4.9"
+    "vow": "^0.4.9",
+    "ws": "^0.7.2"
   }
 }
