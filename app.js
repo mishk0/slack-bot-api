@@ -6,8 +6,6 @@ var fs = require('fs');
 var extend = require('extend');
 var WebSocket = require('ws');
 
-var _cache = {};
-
 function Bot(params) {
     this.token = params.token;
     this.name = params.name;
@@ -20,6 +18,9 @@ function Bot(params) {
 Bot.prototype.login = function() {
     this._api('rtm.start').then(function(data) {
         this.wsUrl = data.url;
+        this.channels = data.channels;
+        this.users = data.users;
+        this.ims = data.ims;
 
         this.connect();
     }.bind(this))
@@ -36,10 +37,17 @@ Bot.prototype.connect = function() {
 };
 
 Bot.prototype.getChannels = function() {
+    if (this.channels) {
+        return Vow.fulfill({ channels: this.channels });
+    }
     return this._api('channels.list');
 };
 
 Bot.prototype.getUsers = function() {
+    if (this.users) {
+        return Vow.fulfill({ members: this.users });
+    }
+
     return this._api('users.list');
 };
 
@@ -85,12 +93,6 @@ Bot.prototype._api = function(method_name, params) {
     };
 
     return new Vow.Promise(function(resolve, reject) {
-        if (_cache.path) {
-            resolve(cache.path);
-
-            return false;
-        }
-
         request(data, function(err, request, body) {
             if (err) {
                 reject(err);
@@ -98,13 +100,7 @@ Bot.prototype._api = function(method_name, params) {
                 return false;
             }
 
-            body = JSON.parse(body);
-
-            if (params.cache !== false) {
-                _cache[path] = body;
-            }
-
-            resolve(body);
+            resolve(JSON.parse(body));
         })
     });
 };
