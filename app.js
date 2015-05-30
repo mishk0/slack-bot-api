@@ -11,6 +11,7 @@ var _cache = {};
 function Bot(params) {
     this.token = params.token;
     this.name = params.name;
+    this.onMessage = params.onMessage;
 
     assert(params.token, 'token must be defined');
     this.login();
@@ -26,7 +27,12 @@ Bot.prototype.login = function() {
 
 Bot.prototype.connect = function() {
     this.ws = new WebSocket(this.wsUrl);
-    console.log(this.ws);
+
+    this.ws.on('message', function(data) {
+        if (this.onMessage) {
+            this.onMessage(data);
+        }
+    }.bind(this));
 };
 
 Bot.prototype.getChannels = function() {
