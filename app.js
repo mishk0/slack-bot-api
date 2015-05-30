@@ -4,7 +4,6 @@ var Vow = require('vow');
 var qs = require('querystring');
 var fs = require('fs');
 var extend = require('extend');
-var _ = require('lodash');
 
 var _cache = {};
 var token;
@@ -12,19 +11,20 @@ var token;
 function getChannels() {
     return _get('channels.list');
 }
+
 function getUsers() {
     return _get('users.list');
 }
 
 function getUser(name) {
     return getUsers().then(function(data) {
-        return _.find(data.members, { name: name});
+        return _find(data.members, { name: name});
     });
 }
 
 function getChannel(name) {
     return getChannels().then(function(data) {
-        return _.find(data.channels, { name: name});
+        return _find(data.channels, { name: name});
     });
 }
 
@@ -72,9 +72,27 @@ function _get(method_name, params) {
                 return false;
             }
 
-            resolve(JSON.parse(body));
+            body = JSON.parse(body);
+
+            if (params.cache !== false) {
+                _cache[path] = body;
+            }
+
+            resolve(body);
         })
     });
+}
+
+function _find(arr, params) {
+    var result = {};
+
+    arr.forEach(function(item) {
+        if (Object.keys(params).every(function(key) { return item[key] === params[key]})) {
+            result = item;
+        }
+    });
+
+    return result;
 }
 
 module.exports = {
@@ -82,5 +100,6 @@ module.exports = {
     getUsers: getUsers,
     getChannel: getChannel,
     getChatId: getChatId,
-    postMessage: postMessage
+    postMessage: postMessage,
+    getUser: getUser
 };
