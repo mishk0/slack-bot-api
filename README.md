@@ -1,4 +1,5 @@
 # slack-bot-api
+Simple javascript api for Slack
 ## Usage
 ```js
 var SlackBot = require('../app.js');
