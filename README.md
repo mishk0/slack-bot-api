@@ -11,7 +11,7 @@ var bot = new SlackBot({
 bot.postMessage('username', 'Hello user!');
 
 bot.on('message', function() {
-    // all ingoing events
+    // all ingoing events https://api.slack.com/rtm
     console.log(data);
 });
 ```
