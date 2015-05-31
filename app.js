@@ -5,15 +5,18 @@ var qs = require('querystring');
 var fs = require('fs');
 var extend = require('extend');
 var WebSocket = require('ws');
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
 
 function Bot(params) {
     this.token = params.token;
     this.name = params.name;
-    this.onMessage = params.onMessage;
 
     assert(params.token, 'token must be defined');
     this.login();
 }
+
+util.inherits(Bot, EventEmitter);
 
 Bot.prototype.login = function() {
     this._api('rtm.start').then(function(data) {
@@ -30,9 +33,7 @@ Bot.prototype.connect = function() {
     this.ws = new WebSocket(this.wsUrl);
 
     this.ws.on('message', function(data) {
-        if (this.onMessage) {
-            this.onMessage(data);
-        }
+        this.emit('message', data);
     }.bind(this));
 };
 
