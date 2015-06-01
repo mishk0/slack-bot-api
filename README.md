@@ -4,15 +4,14 @@ Simple javascript api for Slack
 ```js
 var SlackBot = require('../app.js');
 var bot = new SlackBot({
-    token: 'xoxb-012345678-ABC1DFG2HIJ3',
-    name: 'My Bot',
-    onMessage: onMessage
+    token: 'xoxb-012345678-ABC1DFG2HIJ3', // Add a bot https://my.slack.com/services/new/bot and put the token 
+    name: 'My Bot'
 });
 
 bot.postMessage('username', 'Hello user!');
 
-function onMessage(data) {
-    // all ingoing events
+bot.on('message', function() {
+    // all ingoing events https://api.slack.com/rtm
     console.log(data);
-}
+});
 ```
