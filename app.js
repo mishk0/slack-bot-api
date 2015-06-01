@@ -25,12 +25,18 @@ Bot.prototype.login = function() {
         this.users = data.users;
         this.ims = data.ims;
 
+        this.emit('start');
+
         this.connect();
     }.bind(this))
 };
 
 Bot.prototype.connect = function() {
     this.ws = new WebSocket(this.wsUrl);
+
+    this.ws.on('open', function(data) {
+        this.emit('open', data);
+    }.bind(this));
 
     this.ws.on('message', function(data) {
         this.emit('message', data);
@@ -67,19 +73,27 @@ Bot.prototype.getChannel = function(name) {
 Bot.prototype.getChatId = function(name) {
     return this.getUser(name).then(function(data) {
 
-        return this._api('im.open', {user: data.id});
+        var chatId = _find(this.ims, { user: data.id }).id;
+
+        return chatId || this.openIm(data.id);
     }.bind(this)).then(function(data) {
-        return data.channel.id;
+        return typeof data === 'string' ? data : data.channel.id;
     });
 };
 
-Bot.prototype.postMessage = function(name, text) {
+Bot.prototype.openIm = function(userId) {
+    return this._api('im.open', {user: userId});
+};
+
+Bot.prototype.postMessage = function(name, text, params) {
     return this.getChatId(name).then(function(chatId) {
-        return this._api('chat.postMessage', {
+        params = extend({
             text: text,
             channel: chatId,
             username: this.name
-        })
+        }, params || {});
+
+        return this._api('chat.postMessage', params)
     }.bind(this))
 };
 
