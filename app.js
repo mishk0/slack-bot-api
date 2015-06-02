@@ -66,7 +66,13 @@ Bot.prototype.getUser = function(name) {
 
 Bot.prototype.getChannel = function(name) {
     return this.getChannels().then(function(data) {
-        return _find(data.channels, { name: name});
+        return _find(data.channels, { name: name });
+    });
+};
+
+Bot.prototype.getChannelId = function(name) {
+    return this.getChannel(name).then(function(channel) {
+        return channel.id;
     });
 };
 
@@ -85,16 +91,26 @@ Bot.prototype.openIm = function(userId) {
     return this._api('im.open', {user: userId});
 };
 
-Bot.prototype.postMessage = function(name, text, params) {
-    return this.getChatId(name).then(function(chatId) {
-        params = extend({
-            text: text,
-            channel: chatId,
-            username: this.name
-        }, params || {});
+Bot.prototype.postMessage = function(id, text, params) {
+    params = extend({
+        text: text,
+        channel: id,
+        username: this.name
+    }, params || {});
 
-        return this._api('chat.postMessage', params)
-    }.bind(this))
+    return this._api('chat.postMessage', params);
+};
+
+Bot.prototype.postMessageToUser = function(name, text, params) {
+    return this.getChatId(name).then(function(chatId) {
+        return this.postMessage(chatId, text, params);
+    }.bind(this));
+};
+
+Bot.prototype.postMessageToChannel = function(name, text, params) {
+    return this.getChannelId(name).then(function(channelId) {
+        return this.postMessage(channelId, text, params);
+    }.bind(this));
 };
 
 Bot.prototype._api = function(method_name, params) {
