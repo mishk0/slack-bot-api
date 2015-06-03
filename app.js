@@ -4,6 +4,9 @@ var qs = require('querystring');
 var extend = require('extend');
 var WebSocket = require('ws');
 var util = require('util');
+var utils = require('./libs/utils.js');
+var find = utils.find;
+var assert = utils.assert;
 var EventEmitter = require('events').EventEmitter;
 
 /**
@@ -81,7 +84,7 @@ Bot.prototype.getUsers = function() {
  */
 Bot.prototype.getUser = function(name) {
     return this.getUsers().then(function(data) {
-        return _find(data.members, { name: name});
+        return find(data.members, { name: name});
     });
 };
 
@@ -92,7 +95,7 @@ Bot.prototype.getUser = function(name) {
  */
 Bot.prototype.getChannel = function(name) {
     return this.getChannels().then(function(data) {
-        return _find(data.channels, { name: name });
+        return find(data.channels, { name: name });
     });
 };
 
@@ -115,7 +118,7 @@ Bot.prototype.getChannelId = function(name) {
 Bot.prototype.getChatId = function(name) {
     return this.getUser(name).then(function(data) {
 
-        var chatId = _find(this.ims, { user: data.id }).id;
+        var chatId = find(this.ims, { user: data.id }).id;
 
         return chatId || this.openIm(data.id);
     }.bind(this)).then(function(data) {
@@ -188,12 +191,11 @@ Bot.prototype._api = function(method_name, params) {
     var path = method_name + '?' + qs.stringify(params);
 
     var data = {
-        method: 'GET',
         url: 'https://slack.com/api/' + path
     };
 
     return new Vow.Promise(function(resolve, reject) {
-        request(data, function(err, request, body) {
+        request.get(data, function(err, request, body) {
             if (err) {
                 reject(err);
 
@@ -204,23 +206,5 @@ Bot.prototype._api = function(method_name, params) {
         })
     });
 };
-
-function _find(arr, params) {
-    var result = {};
-
-    arr.forEach(function(item) {
-        if (Object.keys(params).every(function(key) { return item[key] === params[key]})) {
-            result = item;
-        }
-    });
-
-    return result;
-}
-
-function assert(condition, error) {
-    if (!condition) {
-        throw new Error('[Slack Bot Error] ' + error);
-    }
-}
 
 module.exports = Bot;
