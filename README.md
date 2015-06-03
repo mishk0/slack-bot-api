@@ -8,7 +8,10 @@ var bot = new SlackBot({
     name: 'My Bot'
 });
 
-bot.postMessage('username', 'Hello user!');
+bot.on('start', function() {
+    bot.postMessageToChannel('general', 'hey!');
+    bot.postMessageToUser('username', 'hey!');
+});
 
 bot.on('message', function() {
     // all ingoing events https://api.slack.com/rtm
