@@ -1,18 +1,25 @@
 {
   "name": "slack-bot-api",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Simple API for Slack",
   "main": "app.js",
+  "author": {
+    "name": "Mikhail Mokrushin",
+    "email": "mokrushin.ms@ya.ru"
+  },
+  "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "mishk0",
-  "license": "ISC",
   "dependencies": {
-    "lodash": "^3.9.3",
     "extend": "^2.0.1",
     "request": "^2.56.0",
     "vow": "^0.4.9",
     "ws": "^0.7.2"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.14.1"
   }
 }

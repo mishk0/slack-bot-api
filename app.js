@@ -1,13 +1,15 @@
-var https = require('https');
 var request = require('request');
 var Vow = require('vow');
 var qs = require('querystring');
-var fs = require('fs');
 var extend = require('extend');
 var WebSocket = require('ws');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 
+/**
+ * @param {object} params
+ * @constructor
+ */
 function Bot(params) {
     this.token = params.token;
     this.name = params.name;
@@ -18,6 +20,9 @@ function Bot(params) {
 
 util.inherits(Bot, EventEmitter);
 
+/**
+ * Starts a Real Time Messaging API session
+ */
 Bot.prototype.login = function() {
     this._api('rtm.start').then(function(data) {
         this.wsUrl = data.url;
@@ -31,6 +36,9 @@ Bot.prototype.login = function() {
     }.bind(this))
 };
 
+/**
+ * Establish a WebSocket connection
+ */
 Bot.prototype.connect = function() {
     this.ws = new WebSocket(this.wsUrl);
 
@@ -43,6 +51,10 @@ Bot.prototype.connect = function() {
     }.bind(this));
 };
 
+/**
+ * Get channels
+ * @returns {vow.Promise}
+ */
 Bot.prototype.getChannels = function() {
     if (this.channels) {
         return Vow.fulfill({ channels: this.channels });
@@ -50,6 +62,10 @@ Bot.prototype.getChannels = function() {
     return this._api('channels.list');
 };
 
+/**
+ * Get users
+ * @returns {vow.Promise}
+ */
 Bot.prototype.getUsers = function() {
     if (this.users) {
         return Vow.fulfill({ members: this.users });
@@ -58,24 +74,44 @@ Bot.prototype.getUsers = function() {
     return this._api('users.list');
 };
 
+/**
+ * Get user by name
+ * @param {string} name
+ * @returns {object}
+ */
 Bot.prototype.getUser = function(name) {
     return this.getUsers().then(function(data) {
         return _find(data.members, { name: name});
     });
 };
 
+/**
+ * Get channel by name
+ * @param {string} name
+ * @returns {object}
+ */
 Bot.prototype.getChannel = function(name) {
     return this.getChannels().then(function(data) {
         return _find(data.channels, { name: name });
     });
 };
 
+/**
+ * Get channel ID
+ * @param {string} name
+ * @returns {string}
+ */
 Bot.prototype.getChannelId = function(name) {
     return this.getChannel(name).then(function(channel) {
         return channel.id;
     });
 };
 
+/**
+ * Get "direct message" channel ID
+ * @param {string} name
+ * @returns {vow.Promise}
+ */
 Bot.prototype.getChatId = function(name) {
     return this.getUser(name).then(function(data) {
 
@@ -87,10 +123,22 @@ Bot.prototype.getChatId = function(name) {
     });
 };
 
+/**
+ * Opens a "direct message" channel with another member of your Slack team
+ * @param {string} userId
+ * @returns {vow.Promise}
+ */
 Bot.prototype.openIm = function(userId) {
     return this._api('im.open', {user: userId});
 };
 
+/**
+ * Posts a message to a channel by ID
+ * @param {string} id - channel ID
+ * @param {string} text
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
 Bot.prototype.postMessage = function(id, text, params) {
     params = extend({
         text: text,
@@ -101,18 +149,39 @@ Bot.prototype.postMessage = function(id, text, params) {
     return this._api('chat.postMessage', params);
 };
 
+/**
+ * Posts a message to user by name
+ * @param {string} name
+ * @param {string} text
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
 Bot.prototype.postMessageToUser = function(name, text, params) {
     return this.getChatId(name).then(function(chatId) {
         return this.postMessage(chatId, text, params);
     }.bind(this));
 };
 
+/**
+ * Posts a message to channel by name
+ * @param {string} name
+ * @param {string} text
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
 Bot.prototype.postMessageToChannel = function(name, text, params) {
     return this.getChannelId(name).then(function(channelId) {
         return this.postMessage(channelId, text, params);
     }.bind(this));
 };
 
+/**
+ * Send request to API method
+ * @param {string} method_name
+ * @param {object} params
+ * @returns {vow.Promise}
+ * @private
+ */
 Bot.prototype._api = function(method_name, params) {
     params = extend(params || {}, {token: this.token});
 
