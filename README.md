@@ -24,17 +24,28 @@ It also exposes all opportunities of <a href="https://api.slack.com/rtm">Slack's
 
 ## Usage
 ```js
-var SlackBot = require('../app.js');
+var SlackBot = require('slackbots');
+
+// create a bot
 var bot = new SlackBot({
     token: 'xoxb-012345678-ABC1DFG2HIJ3', // Add a bot https://my.slack.com/services/new/bot and put the token 
     name: 'My Bot'
 });
 
 bot.on('start', function() {
-    bot.postMessageToChannel('general', 'hey!');
-    bot.postMessageToUser('username', 'hey!');
+    // more information about additional params https://api.slack.com/methods/chat.postMessage
+    var params = {
+        icon_emoji: ':cat:'
+    };
+    
+    bot.postMessageToChannel('general', 'hey!', params);
+    bot.postMessageToUser('username', 'hey!', params);
 });
+```
+PROFIT!
+<img src="http://i.imgur.com/WiritZ6.png" />
 
+```js
 bot.on('message', function() {
     // all ingoing events https://api.slack.com/rtm
     console.log(data);
