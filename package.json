@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/jshint/bin/jshint libs/*.js index.js && ./node_modules/jscs/bin/jscs libs/*.js index.js && ./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
     "extend": "^2.0.1",
@@ -19,6 +19,8 @@
   },
   "devDependencies": {
     "chai": "^2.3.0",
+    "jscs": "^1.13.1",
+    "jshint": "^2.8.0",
     "mocha": "^2.2.5",
     "sinon": "^1.14.1"
   }

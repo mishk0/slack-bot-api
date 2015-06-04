@@ -36,7 +36,7 @@ Bot.prototype.login = function() {
         this.emit('start');
 
         this.connect();
-    }.bind(this))
+    }.bind(this));
 };
 
 /**
@@ -180,15 +180,15 @@ Bot.prototype.postMessageToChannel = function(name, text, params) {
 
 /**
  * Send request to API method
- * @param {string} method_name
+ * @param {string} methodName
  * @param {object} params
  * @returns {vow.Promise}
  * @private
  */
-Bot.prototype._api = function(method_name, params) {
+Bot.prototype._api = function(methodName, params) {
     params = extend(params || {}, {token: this.token});
 
-    var path = method_name + '?' + qs.stringify(params);
+    var path = methodName + '?' + qs.stringify(params);
 
     var data = {
         url: 'https://slack.com/api/' + path
@@ -203,7 +203,7 @@ Bot.prototype._api = function(method_name, params) {
             }
 
             resolve(JSON.parse(body));
-        })
+        });
     });
 };
 
