@@ -2,7 +2,9 @@
 [![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/mishk0/slack-bot-api/master/LICENSE)
 [![Build Status](https://travis-ci.org/mishk0/slack-bot-api.svg?branch=master)](https://travis-ci.org/mishk0/slack-bot-api)
 
-This is Node.js library for easy operation with Slack API. It also exposes all opportunities of <a href="https://api.slack.com/rtm">Slack's Real Time Messaging API</a>
+This is Node.js library for easy operation with Slack API.
+
+It also exposes all opportunities of <a href="https://api.slack.com/rtm">Slack's Real Time Messaging API</a>
 ## Usage
 ```js
 var SlackBot = require('../app.js');
