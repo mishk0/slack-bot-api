@@ -47,7 +47,7 @@ PROFIT!
 <img src="http://i.imgur.com/WiritZ6.png" />
 
 ```js
-bot.on('message', function() {
+bot.on('message', function(data) {
     // all ingoing events https://api.slack.com/rtm
     console.log(data);
 });
