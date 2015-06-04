@@ -1,5 +1,5 @@
 {
-  "name": "slack-bot-api",
+  "name": "slackbots",
   "version": "0.1.0",
   "description": "Simple API for Slack",
   "main": "app.js",
