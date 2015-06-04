@@ -11,6 +11,17 @@ It also exposes all opportunities of <a href="https://api.slack.com/rtm">Slack's
 - `start` - event fired, when Real Time Messaging API is started,
 - `message` - event fired, when something happens in Slack. Description of all events <a href="https://api.slack.com/rtm">here</a>.
 
+### Methods
+
+- `getChannels` (return: promise) - returns a list of all channels in the team,
+- `getUsers` (return: promise) - returns a list of all users in the team,
+- `getUser` (return: promise) - gets user by name,
+- `getChannel` (return: promise) - gets channel by name,
+- `getChatId` (return: promise) - it returns or opens and returns a direct message channel ID,
+- `postMessage` - posts a message to channel by ID,
+- `postMessageToChannel` - posts a message to channel by name,
+- `postMessageToUser` - posts a direct message by user name.
+
 ## Usage
 ```js
 var SlackBot = require('../app.js');
