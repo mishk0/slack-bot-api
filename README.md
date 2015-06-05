@@ -9,7 +9,7 @@ It also exposes all opportunities of <a href="https://api.slack.com/rtm">Slack's
 
 ### Events
 
-- `start` - event fired, when Real Time Messaging API is started,
+- `start` - event fired, when Real Time Messaging API is started (via websocket),
 - `message` - event fired, when something happens in Slack. Description of all events <a href="https://api.slack.com/rtm">here</a>.
 
 ### Methods
