@@ -39,8 +39,8 @@ bot.on('start', function() {
         icon_emoji: ':cat:'
     };
     
-    bot.postMessageToChannel('general', 'hey!', params);
-    bot.postMessageToUser('username', 'hey!', params);
+    bot.postMessageToChannel('general', 'meow!', params);
+    bot.postMessageToUser('username', 'meow!', params);
 });
 ```
 PROFIT!
