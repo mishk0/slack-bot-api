@@ -39,14 +39,17 @@ bot.on('start', function() {
         icon_emoji: ':cat:'
     };
     
-    bot.postMessageToChannel('general', 'hey!', params);
-    bot.postMessageToUser('username', 'hey!', params);
+    bot.postMessageToChannel('general', 'meow!', params);
+    bot.postMessageToUser('username', 'meow!', params);
 });
 ```
 PROFIT!
-<img src="http://i.imgur.com/WiritZ6.png" />
+<img src="http://i.imgur.com/hqzTXHm.png" />
 
 ```js
+/**
+ * @param {object} data
+ */
 bot.on('message', function(data) {
     // all ingoing events https://api.slack.com/rtm
     console.log(data);
