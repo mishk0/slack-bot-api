@@ -1,0 +1,113 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /Users/mishk0/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/Users/mishk0/.npm/SlackBots/0.1.0/package.tgz', '.' ]
+11 verbose tarball /Users/mishk0/.npm/SlackBots/0.1.0/package.tgz
+12 verbose folder .
+13 info prepublish SlackBots@0.1.0
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /Users/mishk0/.npm/1f1177db-tar.lock
+16 silly lockFile 66e5a075--npm-SlackBots-0-1-0-package-tgz tar:///Users/mishk0/.npm/SlackBots/0.1.0/package.tgz
+17 verbose lock tar:///Users/mishk0/.npm/SlackBots/0.1.0/package.tgz /Users/mishk0/.npm/66e5a075--npm-SlackBots-0-1-0-package-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 66e5a075--npm-SlackBots-0-1-0-package-tgz tar:///Users/mishk0/.npm/SlackBots/0.1.0/package.tgz
+21 silly lockFile 66e5a075--npm-SlackBots-0-1-0-package-tgz tar:///Users/mishk0/.npm/SlackBots/0.1.0/package.tgz
+22 silly lockFile 526e30a4-shk0-npm-SlackBots-0-1-0-package /Users/mishk0/.npm/SlackBots/0.1.0/package
+23 verbose lock /Users/mishk0/.npm/SlackBots/0.1.0/package /Users/mishk0/.npm/526e30a4-shk0-npm-SlackBots-0-1-0-package.lock
+24 silly lockFile 526e30a4-shk0-npm-SlackBots-0-1-0-package /Users/mishk0/.npm/SlackBots/0.1.0/package
+25 silly lockFile 526e30a4-shk0-npm-SlackBots-0-1-0-package /Users/mishk0/.npm/SlackBots/0.1.0/package
+26 silly lockFile 3a52ce78- .
+27 silly lockFile 3a52ce78- .
+28 silly publish { name: 'SlackBots',
+28 silly publish   version: '0.1.0',
+28 silly publish   description: 'Simple API for Slack',
+28 silly publish   main: 'app.js',
+28 silly publish   author: { name: 'Mikhail Mokrushin', email: 'mokrushin.ms@ya.ru' },
+28 silly publish   license: 'MIT',
+28 silly publish   scripts: { test: './node_modules/jshint/bin/jshint libs/*.js index.js && ./node_modules/jscs/bin/jscs libs/*.js index.js && ./node_modules/mocha/bin/mocha' },
+28 silly publish   dependencies:
+28 silly publish    { extend: '^2.0.1',
+28 silly publish      request: '^2.56.0',
+28 silly publish      vow: '^0.4.9',
+28 silly publish      ws: '^0.7.2' },
+28 silly publish   devDependencies:
+28 silly publish    { chai: '^2.3.0',
+28 silly publish      jscs: '^1.13.1',
+28 silly publish      jshint: '^2.8.0',
+28 silly publish      mocha: '^2.2.5',
+28 silly publish      sinon: '^1.14.1' },
+28 silly publish   readme: '# slack-bot-api\n[![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/mishk0/slack-bot-api/master/LICENSE)\n[![Build Status](https://travis-ci.org/mishk0/slack-bot-api.svg?branch=master)](https://travis-ci.org/mishk0/slack-bot-api)\n\nSimple javascript api for Slack\n## Usage\n```js\nvar SlackBot = require(\'../app.js\');\nvar bot = new SlackBot({\n    token: \'xoxb-012345678-ABC1DFG2HIJ3\', // Add a bot https://my.slack.com/services/new/bot and put the token \n    name: \'My Bot\'\n});\n\nbot.on(\'start\', function() {\n    bot.postMessageToChannel(\'general\', \'hey!\');\n    bot.postMessageToUser(\'username\', \'hey!\');\n});\n\nbot.on(\'message\', function() {\n    // all ingoing events https://api.slack.com/rtm\n    console.log(data);\n});\n```\n',
+28 silly publish   readmeFilename: 'README.md',
+28 silly publish   gitHead: '0a66aa0446b1f46700f01f0740663e18a3ef22d5',
+28 silly publish   _id: 'SlackBots@0.1.0',
+28 silly publish   _shasum: '895f4e9c427d0f37ea5c3e812ba18f2679d86033',
+28 silly publish   _from: '.' }
+29 verbose request where is /SlackBots
+30 verbose request registry https://registry.npmjs.org/
+31 verbose request id 1b9aed6b08bc6797
+32 verbose url raw /SlackBots
+33 verbose url resolving [ 'https://registry.npmjs.org/', './SlackBots' ]
+34 verbose url resolved https://registry.npmjs.org/SlackBots
+35 verbose request where is https://registry.npmjs.org/SlackBots
+36 info trying registry request attempt 1 at 23:41:24
+37 http PUT https://registry.npmjs.org/SlackBots
+38 http 500 https://registry.npmjs.org/SlackBots
+39 info retry will retry, error on last attempt: Error: unexpected status code: 400 : SlackBots
+40 info trying registry request attempt 2 at 23:41:35
+41 http PUT https://registry.npmjs.org/SlackBots
+42 http 500 https://registry.npmjs.org/SlackBots
+43 info retry will retry, error on last attempt: Error: unexpected status code: 400 : SlackBots
+44 info trying registry request attempt 3 at 23:42:37
+45 http PUT https://registry.npmjs.org/SlackBots
+46 http 500 https://registry.npmjs.org/SlackBots
+47 verbose headers { 'content-type': 'application/json',
+47 verbose headers   'cache-control': 'max-age=0',
+47 verbose headers   'content-length': '39',
+47 verbose headers   'accept-ranges': 'bytes',
+47 verbose headers   date: 'Thu, 04 Jun 2015 20:42:38 GMT',
+47 verbose headers   via: '1.1 varnish',
+47 verbose headers   connection: 'keep-alive',
+47 verbose headers   'x-served-by': 'cache-ams4136-AMS',
+47 verbose headers   'x-cache': 'MISS',
+47 verbose headers   'x-cache-hits': '0',
+47 verbose headers   'x-timer': 'S1433450557.460993,VS0,VE1371' }
+48 error publish Failed PUT 500
+49 error Error: unexpected status code: 400 : SlackBots
+49 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:308:14)
+49 error     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:246:65)
+49 error     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:236:22)
+49 error     at Request.emit (events.js:98:17)
+49 error     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1142:14)
+49 error     at Request.emit (events.js:117:20)
+49 error     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1096:12)
+49 error     at IncomingMessage.emit (events.js:117:20)
+49 error     at _stream_readable.js:943:16
+49 error     at process._tickCallback (node.js:419:13)
+50 error If you need help, you may report this *entire* log,
+50 error including the npm and node versions, at:
+50 error     <http://github.com/npm/npm/issues>
+51 error System Darwin 14.3.0
+52 error command "node" "/usr/local/bin/npm" "publish"
+53 error cwd /Users/mishk0/WebstormProjects/mizulina-slack
+54 error node -v v0.10.32
+55 error npm -v 1.4.28
+56 verbose exit [ 1, true ]

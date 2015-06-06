@@ -49,8 +49,16 @@ Bot.prototype.connect = function() {
         this.emit('open', data);
     }.bind(this));
 
+    this.ws.on('close', function(data) {
+        this.emit('close', data);
+    }.bind(this));
+
     this.ws.on('message', function(data) {
-        this.emit('message', data);
+        try {
+            this.emit('message', JSON.parse(data));
+        } catch (e) {
+            console.log(e);
+        }
     }.bind(this));
 };
 
@@ -195,15 +203,21 @@ Bot.prototype._api = function(methodName, params) {
     };
 
     return new Vow.Promise(function(resolve, reject) {
+
         request.get(data, function(err, request, body) {
             if (err) {
                 reject(err);
 
                 return false;
             }
-
-            resolve(JSON.parse(body));
+            try {
+                resolve(JSON.parse(body));
+            } catch (e) {
+                reject(e)
+            }
         });
+    }).fail(function(err) {
+        console.log(err);
     });
 };
 
