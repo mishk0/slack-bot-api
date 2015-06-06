@@ -1,6 +1,7 @@
 # SlackBots.js
 [![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/mishk0/slack-bot-api/master/LICENSE)
 [![Build Status](https://travis-ci.org/mishk0/slack-bot-api.svg?branch=master)](https://travis-ci.org/mishk0/slack-bot-api)
+[![npm](http://img.shields.io/npm/v/slackbots.svg?style=flat)](https://www.npmjs.com/package/slackbots)
 
 This is Node.js library for easy operation with Slack API.
 
@@ -8,7 +9,7 @@ It also exposes all opportunities of <a href="https://api.slack.com/rtm">Slack's
 
 ### Events
 
-- `start` - event fired, when Real Time Messaging API is started,
+- `start` - event fired, when Real Time Messaging API is started (via websocket),
 - `message` - event fired, when something happens in Slack. Description of all events <a href="https://api.slack.com/rtm">here</a>.
 
 ### Methods
@@ -46,7 +47,7 @@ PROFIT!
 <img src="http://i.imgur.com/WiritZ6.png" />
 
 ```js
-bot.on('message', function() {
+bot.on('message', function(data) {
     // all ingoing events https://api.slack.com/rtm
     console.log(data);
 });
