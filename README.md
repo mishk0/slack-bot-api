@@ -44,9 +44,12 @@ bot.on('start', function() {
 });
 ```
 PROFIT!
-<img src="http://i.imgur.com/WiritZ6.png" />
+<img src="http://i.imgur.com/hqzTXHm.png" />
 
 ```js
+/**
+ * @param {object} data
+ */
 bot.on('message', function(data) {
     // all ingoing events https://api.slack.com/rtm
     console.log(data);
