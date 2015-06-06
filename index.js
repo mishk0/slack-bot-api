@@ -213,7 +213,7 @@ Bot.prototype._api = function(methodName, params) {
             try {
                 resolve(JSON.parse(body));
             } catch (e) {
-                reject(e)
+                reject(e);
             }
         });
     }).fail(function(err) {
