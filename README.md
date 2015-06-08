@@ -61,3 +61,24 @@ bot.on('message', function(data) {
     console.log(data);
 });
 ```
+
+###Response Handler
+Error:
+```js
+bot.postMessageToUser('user1', 'hi').fail(function(data) {
+    //data = { ok: false, error: 'user_not_found' }
+})
+```
+Success:
+```js
+bot.postMessageToUser('user', 'hi').then(function(data) {
+    // ...
+})
+```
+Error and Success:
+```js
+bot.postMessageToUser('user', 'hi').always(function(data) {
+    // ...
+})
+```
+
