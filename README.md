@@ -7,6 +7,12 @@ This is Node.js library for easy operation with Slack API.
 
 It also exposes all opportunities of <a href="https://api.slack.com/rtm">Slack's Real Time Messaging API</a>.
 
+## Installation
+
+```
+npm install slackbots
+```
+
 ### Events
 
 - `start` - event fired, when Real Time Messaging API is started (via websocket),
