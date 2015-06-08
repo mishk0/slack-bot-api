@@ -210,14 +210,22 @@ Bot.prototype._api = function(methodName, params) {
 
                 return false;
             }
+
             try {
-                resolve(JSON.parse(body));
+                body = JSON.parse(body);
+
+                // Response always contain a top-level boolean property ok,
+                // indicating success or failure
+                if (body.ok) {
+                    resolve(body);
+                } else {
+                    reject(body);
+                }
+
             } catch (e) {
                 reject(e);
             }
         });
-    }).fail(function(err) {
-        console.log(err);
     });
 };
 

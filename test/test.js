@@ -28,7 +28,11 @@ describe('slack-bot-api', function() {
     });
 
     describe('#_api', function() {
-        it('1', function(cb) {
+        afterEach(function() {
+            request.get.restore();
+        });
+
+        it('check url', function(done) {
             var r1;
 
             sinon.stub(request, 'get', function(data, cb) {
@@ -36,9 +40,31 @@ describe('slack-bot-api', function() {
                 cb(null, null, '{}');
             });
 
-            bot._api('method', {foo: 1, bar: 2, baz: 3}).then(function() {
+            bot._api('method', {foo: 1, bar: 2, baz: 3}).always(function() {
                 expect(r1.url).to.equal('https://slack.com/api/method?foo=1&bar=2&baz=3&token=token');
-                cb();
+                done();
+            })
+        });
+
+        it('response without error', function(done) {
+            sinon.stub(request, 'get', function(data, cb) {
+                cb(null, null, "{\"ok\": true}");
+            });
+
+            bot._api('method',  {foo: 1, bar: 2, baz: 3}).then(function(data) {
+                expect(data.ok).to.equal(true);
+                done();
+            })
+        });
+
+        it('response with error', function(done) {
+            sinon.stub(request, 'get', function(data, cb) {
+                cb(null, null, "{\"ok\": false}");
+            });
+
+            bot._api('method').fail(function(data) {
+                expect(data.ok).to.equal(false);
+                done();
             })
         });
     })
