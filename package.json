@@ -1,8 +1,8 @@
 {
   "name": "slackbots",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple API for Slack",
-  "main": "app.js",
+  "main": "index.js",
   "author": {
     "name": "Mikhail Mokrushin",
     "email": "mokrushin.ms@ya.ru"
