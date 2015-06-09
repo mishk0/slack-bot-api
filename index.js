@@ -29,7 +29,7 @@ util.inherits(Bot, EventEmitter);
 Bot.prototype.login = function() {
     this._api('rtm.start').then(function(data) {
         this.wsUrl = data.url;
-        this.channels = data.channels;
+        this.channels = data.channels.concat(data.groups);
         this.users = data.users;
         this.ims = data.ims;
         this.groups = data.groups;
