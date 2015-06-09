@@ -32,6 +32,7 @@ Bot.prototype.login = function() {
         this.channels = data.channels;
         this.users = data.users;
         this.ims = data.ims;
+        this.groups = data.groups;
 
         this.emit('start');
 
@@ -86,13 +87,25 @@ Bot.prototype.getUsers = function() {
 };
 
 /**
+ * Get groups
+ * @returns {vow.Promise}
+ */
+Bot.prototype.getGroups = function() {
+    if (this.groups) {
+        return Vow.fulfill({ groups: this.groups });
+    }
+
+    return this._api('groups.list');
+};
+
+/**
  * Get user by name
  * @param {string} name
  * @returns {object}
  */
 Bot.prototype.getUser = function(name) {
     return this.getUsers().then(function(data) {
-        return find(data.members, { name: name});
+        return find(data.members, { name: name });
     });
 };
 
@@ -108,6 +121,17 @@ Bot.prototype.getChannel = function(name) {
 };
 
 /**
+ * Get group by name
+ * @param {string} name
+ * @returns {object}
+ */
+Bot.prototype.getGroup = function(name) {
+    return this.getGroups().then(function(data) {
+        return find(data.groups, { name: name });
+    });
+};
+
+/**
  * Get channel ID
  * @param {string} name
  * @returns {string}
@@ -115,6 +139,17 @@ Bot.prototype.getChannel = function(name) {
 Bot.prototype.getChannelId = function(name) {
     return this.getChannel(name).then(function(channel) {
         return channel.id;
+    });
+};
+
+/**
+ * Get group ID
+ * @param {string} name
+ * @returns {string}
+ */
+Bot.prototype.getGroupId = function(name) {
+    return this.getGroup(name).then(function(group) {
+        return group.id;
     });
 };
 
@@ -183,6 +218,43 @@ Bot.prototype.postMessageToUser = function(name, text, params) {
 Bot.prototype.postMessageToChannel = function(name, text, params) {
     return this.getChannelId(name).then(function(channelId) {
         return this.postMessage(channelId, text, params);
+    }.bind(this));
+};
+
+/**
+ * Posts a message to group by name
+ * @param {string} name
+ * @param {string} text
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
+Bot.prototype.postMessageToGroup = function(name, text, params) {
+    return this.getGroupId(name).then(function(groupId) {
+        return this.postMessage(groupId, text, params);
+    }.bind(this));
+};
+
+/**
+ * Posts a message to group | channel | user
+ * @param name
+ * @param text
+ * @param params
+ * @returns {vow.Promise}
+ */
+Bot.prototype.postTo = function(name, text, params) {
+    return Vow.all([this.getChannels(), this.getUsers(), this.getGroups()]).then(function(data) {
+        var all = [].concat(data[0].channels, data[1].members, data[2].groups);
+        var result = find(all, {name: name});
+
+        assert(Object.keys(result).length, 'wrong name');
+
+        if (result['is_channel']) {
+            return this.postMessageToChannel(name, text, params);
+        } else if (result['is_group']) {
+            return this.postMessageToGroup(name, text, params);
+        } else {
+            return this.postMessageToUser(name, text, params);
+        }
     }.bind(this));
 };
 
