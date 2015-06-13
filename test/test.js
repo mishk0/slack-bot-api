@@ -5,7 +5,6 @@ var bot = new Bot({token: 'token'});
 var sinon = require('sinon');
 var vow = require('vow');
 var sinonChai = require('sinon-chai');
-chai.should();
 chai.use(sinonChai);
 
 var expect = require('chai').expect;
@@ -96,8 +95,8 @@ describe('slack-bot-api', function() {
             sinon.stub(bot, 'postMessageToChannel').returns(vow.fulfill());
 
             bot.postTo('name1', 'text').then(function() {
-                bot.postMessageToChannel.should.have.callCount(1);
-                bot.postMessageToChannel.should.have.been.calledWith('name1', 'text');
+                expect(bot.postMessageToChannel).to.have.callCount(1);
+                expect(bot.postMessageToChannel).to.have.been.calledWith('name1', 'text');
                 cb();
             });
 
@@ -110,8 +109,8 @@ describe('slack-bot-api', function() {
             sinon.stub(bot, 'postMessageToUser').returns(vow.fulfill());
 
             bot.postTo('name1', 'text').then(function() {
-                bot.postMessageToUser.should.have.callCount(1);
-                bot.postMessageToUser.should.have.been.calledWith('name1', 'text');
+                expect(bot.postMessageToUser).to.have.callCount(1);
+                expect(bot.postMessageToUser).to.have.been.calledWith('name1', 'text');
                 cb();
             });
 
@@ -124,8 +123,8 @@ describe('slack-bot-api', function() {
             sinon.stub(bot, 'postMessageToGroup').returns(vow.fulfill());
 
             bot.postTo('name1', 'text').then(function() {
-                bot.postMessageToGroup.should.have.callCount(1);
-                bot.postMessageToGroup.should.have.been.calledWith('name1', 'text');
+                expect(bot.postMessageToGroup).to.have.callCount(1);
+                expect(bot.postMessageToGroup).to.have.been.calledWith('name1', 'text');
                 cb();
             });
 
