@@ -243,6 +243,7 @@ Bot.prototype.postMessageToGroup = function(name, text, params) {
  */
 Bot.prototype.postTo = function(name, text, params) {
     return Vow.all([this.getChannels(), this.getUsers(), this.getGroups()]).then(function(data) {
+
         var all = [].concat(data[0].channels, data[1].members, data[2].groups);
         var result = find(all, {name: name});
 

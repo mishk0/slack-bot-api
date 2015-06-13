@@ -1,8 +1,14 @@
-var expect = require('chai').expect;
+var chai = require('chai');
 var Bot = require('../index.js');
 var utils = require('../libs/utils.js');
 var bot = new Bot({token: 'token'});
 var sinon = require('sinon');
+var vow = require('vow');
+var sinonChai = require('sinon-chai');
+chai.should();
+chai.use(sinonChai);
+
+var expect = require('chai').expect;
 var request = require('request');
 
 describe('slack-bot-api', function() {
@@ -67,5 +73,63 @@ describe('slack-bot-api', function() {
                 done();
             })
         });
-    })
+    });
+
+    describe('#postTo', function() {
+        beforeEach(function() {
+            sinon.stub(bot, 'getChannels');
+            sinon.stub(bot, 'getUsers');
+            sinon.stub(bot, 'getGroups');
+
+        });
+
+        afterEach(function() {
+            bot.getChannels.restore();
+            bot.getUsers.restore();
+            bot.getGroups.restore();
+        });
+
+        it('1', function(cb) {
+            bot.getChannels.returns(vow.fulfill({channels: [{name: 'name1', is_channel: true}]}));
+            bot.getUsers.returns(vow.fulfill({members: []}));
+            bot.getGroups.returns(vow.fulfill({groups: []}));
+            sinon.stub(bot, 'postMessageToChannel').returns(vow.fulfill());
+
+            bot.postTo('name1', 'text').then(function() {
+                bot.postMessageToChannel.should.have.callCount(1);
+                bot.postMessageToChannel.should.have.been.calledWith('name1', 'text');
+                cb();
+            });
+
+        });
+
+        it('2', function(cb) {
+            bot.getChannels.returns(vow.fulfill({channels: []}));
+            bot.getUsers.returns(vow.fulfill({members: [{name: 'name1'}]}));
+            bot.getGroups.returns(vow.fulfill({groups: []}));
+            sinon.stub(bot, 'postMessageToUser').returns(vow.fulfill());
+
+            bot.postTo('name1', 'text').then(function() {
+                bot.postMessageToUser.should.have.callCount(1);
+                bot.postMessageToUser.should.have.been.calledWith('name1', 'text');
+                cb();
+            });
+
+        });
+
+        it('3', function(cb) {
+            bot.getChannels.returns(vow.fulfill({channels: []}));
+            bot.getUsers.returns(vow.fulfill({members: []}));
+            bot.getGroups.returns(vow.fulfill({groups: [{name: 'name1', is_group: true}]}));
+            sinon.stub(bot, 'postMessageToGroup').returns(vow.fulfill());
+
+            bot.postTo('name1', 'text').then(function() {
+                bot.postMessageToGroup.should.have.callCount(1);
+                bot.postMessageToGroup.should.have.been.calledWith('name1', 'text');
+                cb();
+            });
+
+        });
+    });
+
 });
