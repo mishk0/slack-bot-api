@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 var Bot = require('../index.js');
-var utils = require('../libs/utils.js');
+var utils = require('./utils.js');
 var bot = new Bot({token: 'token'});
 var sinon = require('sinon');
 var request = require('request');
