@@ -16,7 +16,9 @@ npm install slackbots
 ### Events
 
 - `start` - event fired, when Real Time Messaging API is started (via websocket),
-- `message` - event fired, when something happens in Slack. Description of all events <a href="https://api.slack.com/rtm">here</a>.
+- `message` - event fired, when something happens in Slack. Description of all events <a href="https://api.slack.com/rtm">here</a>,
+- `open` - websocket connection is open and ready to communicate,
+- `close` - websocket connection is closed.
 
 ### Methods
 
