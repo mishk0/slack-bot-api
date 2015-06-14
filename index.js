@@ -27,7 +27,14 @@ util.inherits(Bot, Slack);
  * @returns {vow.Promise}
  */
 Bot.prototype.postMessageToUser = function(name, text, params) {
-    return this.users.postMessage(name, text, params);
+    return this.users.getElemByName(name)
+        .then(function(data) {
+
+            return this.ims.open(data.id);
+        }.bind(this))
+        .then(function(id) {
+            return this._post(id, text, params);
+        }.bind(this));
 };
 
 /**
@@ -38,7 +45,10 @@ Bot.prototype.postMessageToUser = function(name, text, params) {
  * @returns {vow.Promise}
  */
 Bot.prototype.postMessageToChannel = function(name, text, params) {
-    return this.channels.postMessage(name, text, params);
+    return this.channels.getIdByName(name)
+        .then(function(id) {
+            return this._post(id, text, params);
+        }.bind(this));
 };
 
 /**
@@ -49,7 +59,10 @@ Bot.prototype.postMessageToChannel = function(name, text, params) {
  * @returns {vow.Promise}
  */
 Bot.prototype.postMessageToGroup = function(name, text, params) {
-    return this.groups.postMessage(name, text, params);
+    return this.groups.getIdByName(name)
+        .then(function(id) {
+            return this._post(id, text, params);
+        }.bind(this));
 };
 
 /**
@@ -60,7 +73,7 @@ Bot.prototype.postMessageToGroup = function(name, text, params) {
  * @returns {vow.Promise}
  */
 Bot.prototype.postTo = function(name, text, params) {
-    return Vow.all([this.channels.getItems(), this.users.getItems(), this.groups.getItems()]).then(function(data) {
+    return Vow.all([this.channels.getData(), this.users.getData(), this.groups.getData()]).then(function(data) {
         var all = [].concat(data[0].channels, data[1].members, data[2].groups);
         var result = find(all, {name: name});
 

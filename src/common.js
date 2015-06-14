@@ -28,17 +28,6 @@ Common.prototype._post = function(id, text, params) {
 };
 
 /**
- * Opens a "direct message" channel with another member of your Slack team
- * @param {string} userId
- * @returns {vow.Promise}
- */
-Common.prototype.openIm = function(userId) {
-    var chatId = find(this.ims.getItems(), { user: userId }).id;
-
-    return chatId ? Vow.fulfill(chatId) : this._api('im.open', {user: userId });
-};
-
-/**
  * Send request to API method
  * @param {string} methodName
  * @param {object} params

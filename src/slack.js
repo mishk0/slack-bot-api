@@ -7,7 +7,6 @@ var Users = require('./users.js');
 var Groups = require('./groups.js');
 var Ims = require('./ims.js');
 var Common = require('./common.js');
-var Vow = require('vow');
 
 var Slack = function() {};
 
@@ -50,17 +49,6 @@ Slack.prototype.connect = function() {
             console.log(e);
         }
     }.bind(this));
-};
-
-/**
- * Opens a "direct message" channel with another member of your Slack team
- * @param {string} userId
- * @returns {vow.Promise}
- */
-Common.prototype.openIm = function(userId) {
-    var chatId = find(this.ims.getItems(), { user: userId }).id;
-
-    return chatId ? Vow.fulfill(chatId) : this._api('im.open', {user: userId });
 };
 
 module.exports = Slack;
