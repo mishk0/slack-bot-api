@@ -5,7 +5,9 @@ var Ims = function(data) {
     this._update(data);
 
     this.type = 'ims';
-    this.apiName = 'im.list'
+    this.apiName = 'im.list';
 };
 
 util.inherits(Ims, Collection);
+
+module.exports = Ims;

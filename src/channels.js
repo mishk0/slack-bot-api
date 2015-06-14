@@ -5,7 +5,7 @@ var Channels = function(data) {
     this._update(data);
 
     this.type = 'channels';
-    this.apiName = 'channels.list'
+    this.apiName = 'channels.list';
 };
 
 util.inherits(Channels, Collection);

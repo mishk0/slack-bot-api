@@ -2,7 +2,8 @@ var Vow = require('vow');
 var Slack = require('./src/slack.js');
 var extend = require('extend');
 var assert = require('./src/utils.js').assert;
-var EventEmitter = require('events').EventEmitter;
+var find = require('./src/utils.js').find;
+var util = require('util');
 
 /**
  * @param {object} params
@@ -41,48 +42,6 @@ Bot.prototype.postMessageToChannel = function(name, text, params) {
 };
 
 /**
-<<<<<<< Updated upstream
- * Send request to API method
- * @param {string} methodName
- * @param {object} params
- * @returns {vow.Promise}
- * @private
- */
-Bot.prototype._api = function(methodName, params) {
-    params = extend(params || {}, {token: this.token});
-
-    var path = methodName + '?' + qs.stringify(params);
-
-    var data = {
-        url: 'https://slack.com/api/' + path
-    };
-
-    return new Vow.Promise(function(resolve, reject) {
-
-        request.get(data, function(err, request, body) {
-            if (err) {
-                reject(err);
-
-                return false;
-            }
-
-            try {
-                body = JSON.parse(body);
-
-                // Response always contain a top-level boolean property ok,
-                // indicating success or failure
-                if (body.ok) {
-                    resolve(body);
-                } else {
-                    reject(body);
-                }
-
-            } catch (e) {
-                reject(e);
-            }
-        });
-    });
-=======
  * Posts a message to group by name
  * @param {string} name
  * @param {string} text
@@ -115,7 +74,6 @@ Bot.prototype.postTo = function(name, text, params) {
             return this.postMessageToUser(name, text, params);
         }
     }.bind(this));
->>>>>>> Stashed changes
 };
 
 module.exports = Bot;

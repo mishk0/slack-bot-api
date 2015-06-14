@@ -1,13 +1,11 @@
 var util = require('util');
-var Slack = require('./slack.js');
+var Common = require('./common.js');
+var Vow = require('vow');
+var find = require('./utils.js').find;
 
 var Collection = function() {};
 
-
-
-console.log(Collection.prototype, Slack.prototype, Slack);
-
-util.inherits(Collection, Slack);
+util.inherits(Collection, Common);
 
 Collection.prototype._update = function(data) {
     this.data = data;
