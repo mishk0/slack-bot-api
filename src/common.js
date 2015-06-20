@@ -3,7 +3,6 @@ var extend = require('extend');
 var qs = require('querystring');
 var request = require('request');
 var util = require('util');
-var find = require('./utils.js').find;
 var EventEmitter = require('events').EventEmitter;
 
 var Common = function() {};

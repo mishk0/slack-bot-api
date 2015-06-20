@@ -7,7 +7,12 @@ var Collection = function() {};
 
 util.inherits(Collection, Common);
 
-Collection.prototype._update = function(data) {
+Collection.prototype.update = function(data) {
+    if (typeof data === 'string') {
+        this.token = data;
+
+        return;
+    }
     this.data = data;
 };
 
@@ -16,6 +21,7 @@ Collection.prototype._update = function(data) {
  * @returns {vow.Promise}
  */
 Collection.prototype.getData = function() {
+
     if (this.data) {
         var result = {};
         result[this.type] = this.data;
@@ -32,7 +38,6 @@ Collection.prototype.getData = function() {
  */
 Collection.prototype.getElemByName = function(name) {
     return this.getData().then(function(data) {
-
         return find(data[this.type], { name: name });
     }.bind(this));
 };
@@ -44,5 +49,3 @@ Collection.prototype.getIdByName = function(name) {
 };
 
 module.exports = Collection;
-
-

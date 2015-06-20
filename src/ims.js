@@ -4,7 +4,7 @@ var find = require('./utils.js').find;
 var Vow = require('vow');
 
 var Ims = function(data) {
-    this._update(data);
+    this.update(data);
 
     this.type = 'ims';
     this.apiName = 'im.list';

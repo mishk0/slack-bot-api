@@ -1,11 +1,5 @@
-var extend = require('extend');
 var WebSocket = require('ws');
 var util = require('util');
-var find = require('./utils.js').find;
-var Channels = require('./channels.js');
-var Users = require('./users.js');
-var Groups = require('./groups.js');
-var Ims = require('./ims.js');
 var Common = require('./common.js');
 
 var Slack = function() {};
@@ -17,10 +11,10 @@ util.inherits(Slack, Common);
  */
 Slack.prototype.login = function() {
     this._api('rtm.start').then(function(data) {
-        this.channels = new Channels(data.channels);
-        this.users = new Users(data.users);
-        this.ims = new Ims(data.ims);
-        this.groups = new Groups(data.groups);
+        this.channels.update(data.channels);
+        this.users.update(data.users);
+        this.ims.update(data.ims);
+        this.groups.update(data.groups);
         this.wsUrl = data.url;
 
         this.emit('start');
