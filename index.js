@@ -200,12 +200,11 @@ Bot.prototype.postMessage = function(id, text, params) {
  * @param {string} name
  * @param {string} text
  * @param {object} params
+ * @param {function} cb
  * @returns {vow.Promise}
  */
-Bot.prototype.postMessageToUser = function(name, text, params) {
-    return this.getChatId(name).then(function(chatId) {
-        return this.postMessage(chatId, text, params);
-    }.bind(this));
+Bot.prototype.postMessageToUser = function(name, text, params, cb) {
+    return this._post('user', name, text, params, cb);
 };
 
 /**
@@ -213,12 +212,11 @@ Bot.prototype.postMessageToUser = function(name, text, params) {
  * @param {string} name
  * @param {string} text
  * @param {object} params
+ * @param {function} cb
  * @returns {vow.Promise}
  */
-Bot.prototype.postMessageToChannel = function(name, text, params) {
-    return this.getChannelId(name).then(function(channelId) {
-        return this.postMessage(channelId, text, params);
-    }.bind(this));
+Bot.prototype.postMessageToChannel = function(name, text, params, cb) {
+    return this._post('channel', name, text, params, cb);
 };
 
 /**
@@ -226,12 +224,42 @@ Bot.prototype.postMessageToChannel = function(name, text, params) {
  * @param {string} name
  * @param {string} text
  * @param {object} params
+ * @param {function} cb
  * @returns {vow.Promise}
  */
-Bot.prototype.postMessageToGroup = function(name, text, params) {
-    return this.getGroupId(name).then(function(groupId) {
-        return this.postMessage(groupId, text, params);
-    }.bind(this));
+Bot.prototype.postMessageToGroup = function(name, text, params, cb) {
+    return this._post('group', name, text, params, cb);
+};
+
+/**
+ * Common method for posting messages
+ * @param {string} type
+ * @param {string} name
+ * @param {string} text
+ * @param {object} params
+ * @param {function} cb
+ * @returns {vow.Promise}
+ * @private
+ */
+Bot.prototype._post = function(type, name, text, params, cb) {
+    var method = ({
+        'group': 'getGroupId',
+        'channel': 'getChannelId',
+        'user': 'getChatId'
+    })[type];
+
+    if (typeof params === 'function') {
+        cb = params;
+        params = null;
+    }
+
+    return this[method](name).then(function(itemId) {
+        return this.postMessage(itemId, text, params);
+    }.bind(this)).always(function(data) {
+        if (cb) {
+            cb(data._value);
+        }
+    });
 };
 
 /**
