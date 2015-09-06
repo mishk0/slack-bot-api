@@ -264,12 +264,13 @@ Bot.prototype._post = function(type, name, text, params, cb) {
 
 /**
  * Posts a message to group | channel | user
- * @param name
- * @param text
- * @param params
+ * @param {string} name
+ * @param {string} text
+ * @param {object} params
+ * @param {function} cb
  * @returns {vow.Promise}
  */
-Bot.prototype.postTo = function(name, text, params) {
+Bot.prototype.postTo = function(name, text, params, cb) {
     return Vow.all([this.getChannels(), this.getUsers(), this.getGroups()]).then(function(data) {
 
         var all = [].concat(data[0].channels, data[1].members, data[2].groups);
@@ -278,11 +279,11 @@ Bot.prototype.postTo = function(name, text, params) {
         assert(Object.keys(result).length, 'wrong name');
 
         if (result['is_channel']) {
-            return this.postMessageToChannel(name, text, params);
+            return this.postMessageToChannel(name, text, params, cb);
         } else if (result['is_group']) {
-            return this.postMessageToGroup(name, text, params);
+            return this.postMessageToGroup(name, text, params, cb);
         } else {
-            return this.postMessageToUser(name, text, params);
+            return this.postMessageToUser(name, text, params, cb);
         }
     }.bind(this));
 };
