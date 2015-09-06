@@ -28,10 +28,10 @@ npm install slackbots
 - `getChannel` (return: promise) - gets channel by name,
 - `getChatId` (return: promise) - it returns or opens and returns a direct message channel ID,
 - `postMessage` - posts a message to channel | group | user by ID,
-- `postTo` - posts a message to channel | group | user by name,
-- `postMessageToChannel` - posts a message to channel by name,
-- `postMessageToUser` - posts a direct message by user name,
-- `postMessageToGroup` - posts a message to private group by name.
+- `postTo(name, message [, params, callback])` - posts a message to channel | group | user by name,
+- `postMessageToChannel(name, message [, params, callback])` - posts a message to channel by name,
+- `postMessageToUser(name, message [, params, callback])` - posts a direct message by user name,
+- `postMessageToGroup(name, message [, params, callback])` - posts a message to private group by name.
 
 
 ## Usage
@@ -69,6 +69,14 @@ bot.on('message', function(data) {
 ```
 
 ###Response Handler
+The simplest way for handling response is callback function, which is specified as a last argument:
+```js
+bot.postMessageToUser('user1', 'hi', function(data) {/* ... */});
+bot.postMessageToUser('user1', 'hi', params, function(data) {/* ... */});
+```
+
+But also you can use promises.
+
 Error:
 ```js
 bot.postMessageToUser('user1', 'hi').fail(function(data) {
