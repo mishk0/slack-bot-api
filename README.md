@@ -19,6 +19,7 @@ npm install slackbots
 - `message` - event fired, when something happens in Slack. Description of all events <a href="https://api.slack.com/rtm">here</a>,
 - `open` - websocket connection is open and ready to communicate,
 - `close` - websocket connection is closed.
+- `on_[event name]` All events described on <a href="https://api.slack.com/rtm">slack api</a> are available as `[event name]`
 
 ### Methods
 
@@ -69,6 +70,14 @@ PROFIT!
  */
 bot.on('message', function(data) {
     // all ingoing events https://api.slack.com/rtm
+    console.log(data);
+});
+```
+
+Listen `user_typing` event name as in Slack RTM API documentation
+
+```js
+bot.on("on_user_typing", function(data) {
     console.log(data);
 });
 ```
