@@ -38,7 +38,9 @@ Bot.prototype.login = function() {
         this.emit('start');
 
         this.connect();
-    }.bind(this));
+    }.bind(this)).fail(function(data) {
+        assert(false, data.error);
+    }).done();
 };
 
 /**
