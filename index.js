@@ -1,6 +1,5 @@
 var request = require('request');
 var Vow = require('vow');
-var qs = require('querystring');
 var extend = require('extend');
 var WebSocket = require('ws');
 var util = require('util');
@@ -301,15 +300,14 @@ Bot.prototype.postTo = function(name, text, params, cb) {
 Bot.prototype._api = function(methodName, params) {
     params = extend(params || {}, {token: this.token});
 
-    var path = methodName + '?' + qs.stringify(params);
-
     var data = {
-        url: 'https://slack.com/api/' + path
+        url: 'https://slack.com/api/' + methodName,
+        form: params
     };
 
     return new Vow.Promise(function(resolve, reject) {
 
-        request.get(data, function(err, request, body) {
+        request.post(data, function(err, request, body) {
             if (err) {
                 reject(err);
 
