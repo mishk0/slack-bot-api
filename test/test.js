@@ -34,25 +34,35 @@ describe('slack-bot-api', function() {
 
     describe('#_api', function() {
         afterEach(function() {
-            request.get.restore();
+            request.post.restore();
         });
 
         it('check url', function(done) {
             var r1;
 
-            sinon.stub(request, 'get', function(data, cb) {
+            sinon.stub(request, 'post', function(data, cb) {
                 r1 = data;
                 cb(null, null, '{}');
             });
 
             bot._api('method', {foo: 1, bar: 2, baz: 3}).always(function() {
-                expect(r1.url).to.equal('https://slack.com/api/method?foo=1&bar=2&baz=3&token=token');
+                expect(r1).to.equal(
+                    {
+                        url: 'https://slack.com/api/method',
+                        form: {
+                            foo: 1,
+                            bar: 2,
+                            baz: 3,
+                            token: 'token'
+                        }
+                    }
+                );
                 done();
             })
         });
 
         it('response without error', function(done) {
-            sinon.stub(request, 'get', function(data, cb) {
+            sinon.stub(request, 'post', function(data, cb) {
                 cb(null, null, "{\"ok\": true}");
             });
 
@@ -63,7 +73,7 @@ describe('slack-bot-api', function() {
         });
 
         it('response with error', function(done) {
-            sinon.stub(request, 'get', function(data, cb) {
+            sinon.stub(request, 'post', function(data, cb) {
                 cb(null, null, "{\"ok\": false}");
             });
 
