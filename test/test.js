@@ -46,7 +46,7 @@ describe('slack-bot-api', function() {
             });
 
             bot._api('method', {foo: 1, bar: 2, baz: 3}).always(function() {
-                expect(r1).to.equal(
+                expect(r1).to.deep.equal(
                     {
                         url: 'https://slack.com/api/method',
                         form: {
