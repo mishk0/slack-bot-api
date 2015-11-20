@@ -29,6 +29,7 @@ Bot.prototype.login = function() {
     this._api('rtm.start').then(function(data) {
         this.wsUrl = data.url;
         this.self = data.self;
+        this.team = data.team;
         this.channels = data.channels;
         this.users = data.users;
         this.ims = data.ims;
