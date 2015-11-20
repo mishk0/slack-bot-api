@@ -291,6 +291,26 @@ Bot.prototype.postTo = function(name, text, params, cb) {
 };
 
 /**
+ * Preprocessing of params
+ * @param params
+ * @returns {object}
+ * @private
+ */
+Bot.prototype._preprocessParams = function(params) {
+    params = extend(params || {}, {token: this.token});
+
+    Object.keys(params).forEach(function(name) {
+        var param = params[name];
+
+        if (param && typeof param === 'object') {
+            params[name] = JSON.stringify(param);
+        }
+    });
+
+    return params;
+};
+
+/**
  * Send request to API method
  * @param {string} methodName
  * @param {object} params
@@ -298,11 +318,10 @@ Bot.prototype.postTo = function(name, text, params, cb) {
  * @private
  */
 Bot.prototype._api = function(methodName, params) {
-    params = extend(params || {}, {token: this.token});
 
     var data = {
         url: 'https://slack.com/api/' + methodName,
-        form: params
+        form: this._preprocessParams(params)
     };
 
     return new Vow.Promise(function(resolve, reject) {

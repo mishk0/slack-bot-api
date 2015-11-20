@@ -32,6 +32,58 @@ describe('slack-bot-api', function() {
         });
     });
 
+    describe('#_preprocessParams', function() {
+        it('1', function() {
+            var input = {
+                foo: 1,
+                bar: '2',
+                baz: true
+            };
+
+            var output = {
+                foo: 1,
+                bar: '2',
+                baz: true,
+                token: 'token'
+            };
+
+            expect(bot._preprocessParams(input)).to.deep.equal(output);
+        });
+
+        it('2', function() {
+            var input = {
+                bar: [1, 2, 3],
+                baz: null
+            };
+
+            var output = {
+                bar: JSON.stringify([1, 2, 3]),
+                baz: null,
+                token: 'token'
+            };
+
+            expect(bot._preprocessParams(input)).to.deep.equal(output);
+        });
+
+        it('3', function() {
+            var func = function() {};
+
+            var input = {
+                foo: {a: 1, b: 2, c: [1, 2, '3']},
+                bar: func
+            };
+
+            var output = {
+                foo: JSON.stringify({a: 1, b: 2, c: [1, 2, '3']}),
+                bar: func,
+                token: 'token'
+            };
+
+            expect(bot._preprocessParams(input)).to.deep.equal(output);
+        });
+    });
+
+
     describe('#_api', function() {
         afterEach(function() {
             request.post.restore();
