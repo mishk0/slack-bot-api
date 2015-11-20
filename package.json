@@ -7,6 +7,14 @@
     "name": "Mikhail Mokrushin",
     "email": "mokrushin.ms@ya.ru"
   },
+  "homepage": "https://github.com/mishk0/slack-bot-api",
+  "bugs": {
+    "url": "https://github.com/mishk0/slack-bot-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mishk0/slack-bot-api.git"
+  },
   "license": "MIT",
   "scripts": {
     "test": "./node_modules/jshint/bin/jshint libs/*.js index.js && ./node_modules/jscs/bin/jscs libs/*.js index.js && ./node_modules/mocha/bin/mocha"
