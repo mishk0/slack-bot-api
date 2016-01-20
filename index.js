@@ -68,10 +68,11 @@ Bot.prototype.connect = function() {
 
 /**
  * Get channels
+ * @params {boolean} isForce
  * @returns {vow.Promise}
  */
-Bot.prototype.getChannels = function() {
-    if (this.channels) {
+Bot.prototype.getChannels = function(isForce) {
+    if (this.channels && !isForce) {
         return Vow.fulfill({ channels: this.channels });
     }
     return this._api('channels.list');
@@ -79,10 +80,11 @@ Bot.prototype.getChannels = function() {
 
 /**
  * Get users
+ * @params {boolean} isForce
  * @returns {vow.Promise}
  */
-Bot.prototype.getUsers = function() {
-    if (this.users) {
+Bot.prototype.getUsers = function(isForce) {
+    if (this.users && !isForce) {
         return Vow.fulfill({ members: this.users });
     }
 
@@ -91,10 +93,11 @@ Bot.prototype.getUsers = function() {
 
 /**
  * Get groups
+ * @params {boolean} isForce
  * @returns {vow.Promise}
  */
-Bot.prototype.getGroups = function() {
-    if (this.groups) {
+Bot.prototype.getGroups = function(isForce) {
+    if (this.groups && !isForce) {
         return Vow.fulfill({ groups: this.groups });
     }
 
@@ -104,43 +107,59 @@ Bot.prototype.getGroups = function() {
 /**
  * Get user by name
  * @param {string} name
+ * @param {boolean} isForce
  * @returns {object}
  */
-Bot.prototype.getUser = function(name) {
-    return this.getUsers().then(function(data) {
+Bot.prototype.getUser = function(name, isForce) {
+    return this.getUsers(isForce).then(function(data) {
+        if (isForce) {
+            this.user = data.members;
+        }
+
         return find(data.members, { name: name });
-    });
+    }.bind(this));
 };
 
 /**
  * Get channel by name
  * @param {string} name
+ * @param {boolean} isForce
  * @returns {object}
  */
-Bot.prototype.getChannel = function(name) {
-    return this.getChannels().then(function(data) {
+Bot.prototype.getChannel = function(name, isForce) {
+    return this.getChannels(isForce).then(function(data) {
+        if (isForce) {
+            this.channels = data.channels;
+        }
+
         return find(data.channels, { name: name });
-    });
+    }.bind(this));
 };
 
 /**
  * Get group by name
  * @param {string} name
+ * @param {boolean} isForce
  * @returns {object}
  */
-Bot.prototype.getGroup = function(name) {
-    return this.getGroups().then(function(data) {
+Bot.prototype.getGroup = function(name, isForce) {
+    return this.getGroups(isForce).then(function(data) {
+        if (isForce) {
+            this.groups = data.groups;
+        }
+
         return find(data.groups, { name: name });
-    });
+    }.bind(this));
 };
 
 /**
  * Get channel ID
  * @param {string} name
+ * @param {boolean} isForce
  * @returns {string}
  */
-Bot.prototype.getChannelId = function(name) {
-    return this.getChannel(name).then(function(channel) {
+Bot.prototype.getChannelId = function(name, isForce) {
+    return this.getChannel(name, isForce).then(function(channel) {
         return channel.id;
     });
 };
@@ -148,10 +167,11 @@ Bot.prototype.getChannelId = function(name) {
 /**
  * Get group ID
  * @param {string} name
+ * @param {boolean} isForce
  * @returns {string}
  */
-Bot.prototype.getGroupId = function(name) {
-    return this.getGroup(name).then(function(group) {
+Bot.prototype.getGroupId = function(name, isForce) {
+    return this.getGroup(name, isForce).then(function(group) {
         return group.id;
     });
 };
@@ -159,10 +179,11 @@ Bot.prototype.getGroupId = function(name) {
 /**
  * Get "direct message" channel ID
  * @param {string} name
+ * @param {boolean} isForce
  * @returns {vow.Promise}
  */
-Bot.prototype.getChatId = function(name) {
-    return this.getUser(name).then(function(data) {
+Bot.prototype.getChatId = function(name, isForce) {
+    return this.getUser(name, isForce).then(function(data) {
 
         var chatId = find(this.ims, { user: data.id }).id;
 
@@ -251,12 +272,14 @@ Bot.prototype._post = function(type, name, text, params, cb) {
         'user': 'getChatId'
     })[type];
 
+    var isForce = Boolean(params && params.isForce);
+
     if (typeof params === 'function') {
         cb = params;
         params = null;
     }
 
-    return this[method](name).then(function(itemId) {
+    return this[method](name, isForce).then(function(itemId) {
         return this.postMessage(itemId, text, params);
     }.bind(this)).always(function(data) {
         if (cb) {
@@ -274,7 +297,9 @@ Bot.prototype._post = function(type, name, text, params, cb) {
  * @returns {vow.Promise}
  */
 Bot.prototype.postTo = function(name, text, params, cb) {
-    return Vow.all([this.getChannels(), this.getUsers(), this.getGroups()]).then(function(data) {
+    var isForce = Boolean(params && params.isForce);
+
+    return Vow.all([this.getChannels(isForce), this.getUsers(isForce), this.getGroups(isForce)]).then(function(data) {
 
         var all = [].concat(data[0].channels, data[1].members, data[2].groups);
         var result = find(all, {name: name});
