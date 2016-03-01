@@ -15,6 +15,8 @@ var EventEmitter = require('events').EventEmitter;
 function Bot(params) {
     this.token = params.token;
     this.name = params.name;
+    var refresh = params.refresh;
+    this.refresh = typeof refresh === 'number' && refresh > 0 ? refresh : false;
 
     assert(params.token, 'token must be defined');
     this.login();
@@ -28,12 +30,14 @@ util.inherits(Bot, EventEmitter);
 Bot.prototype.login = function() {
     this._api('rtm.start').then(function(data) {
         this.wsUrl = data.url;
-        this.self = data.self;
-        this.team = data.team;
         this.channels = data.channels;
         this.users = data.users;
         this.ims = data.ims;
         this.groups = data.groups;
+
+        if (this.refresh) {
+            this.refreshData();
+        }
 
         this.emit('start');
 
@@ -41,6 +45,48 @@ Bot.prototype.login = function() {
     }.bind(this)).fail(function(data) {
         assert(false, data.error);
     }).done();
+};
+
+/**
+ * Starts a Real Time Messaging API session
+ */
+Bot.prototype.refreshData = function(forse) {
+    var bot = this;
+
+    clearInterval(bot.refreshInterval);
+
+    if (bot.refresh) {
+        if (forse) {
+            bot.updateData();
+        }
+
+        bot.refreshInterval = setInterval(function () {
+            bot.refreshData(true);
+        }, bot.refresh);
+    }
+};
+
+/**
+ * Update all data
+ */
+Bot.prototype.updateData = function() {
+    var bot = this;
+
+    bot.getChannels().then(function(data) {
+        bot.channels = data.channels;
+    });
+
+    bot.getUsers().then(function(data) {
+        bot.users = data.users;
+    });
+
+    bot.getIms().then(function(data) {
+        bot.ims = data.ims;
+    });
+
+    bot.getGroups().then(function(data) {
+        bot.groups = data.groups;
+    });
 };
 
 /**
@@ -87,6 +133,18 @@ Bot.prototype.getUsers = function() {
     }
 
     return this._api('users.list');
+};
+
+/**
+ * Get imgs
+ * @returns {vow.Promise}
+ */
+Bot.prototype.getIms = function() {
+    if (this.ims) {
+        return Vow.fulfill({ ims: this.ims });
+    }
+
+    return this._api('im.list');
 };
 
 /**

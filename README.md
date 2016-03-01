@@ -40,8 +40,9 @@ var SlackBot = require('slackbots');
 
 // create a bot
 var bot = new SlackBot({
-    token: 'xoxb-012345678-ABC1DFG2HIJ3', // Add a bot https://my.slack.com/services/new/bot and put the token 
-    name: 'My Bot'
+    token: 'xoxb-012345678-ABC1DFG2HIJ3', // Add a bot https://my.slack.com/services/new/bot and put the token
+    name: 'My Bot',
+    refresh: 1000 * 60 * 5 // Default: false, update data on each refresh interval
 });
 
 bot.on('start', function() {
@@ -49,15 +50,15 @@ bot.on('start', function() {
     var params = {
         icon_emoji: ':cat:'
     };
-    
-    // define channel, where bot exist. You can adjust it there https://my.slack.com/services 
+
+    // define channel, where bot exist. You can adjust it there https://my.slack.com/services
     bot.postMessageToChannel('general', 'meow!', params);
-    
+
     // define existing username instead of 'user_name'
-    bot.postMessageToUser('user_name', 'meow!', params); 
-    
+    bot.postMessageToUser('user_name', 'meow!', params);
+
     // define private group instead of 'private_group', where bot exist
-    bot.postMessageToGroup('private_group', 'meow!', params); 
+    bot.postMessageToGroup('private_group', 'meow!', params);
 });
 ```
 PROFIT!
@@ -100,4 +101,3 @@ bot.postMessageToUser('user', 'hi').always(function(data) {
     // ...
 })
 ```
-
