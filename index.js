@@ -292,6 +292,24 @@ Bot.prototype.postTo = function(name, text, params, cb) {
 };
 
 /**
+ * Posts a reaction to a message by timestamp
+ * @param {string} id - channel ID
+ * @param {string} emoji - emoji string (without the : symbols)
+ * @param {string} ts - timestamp of the message you want to react to
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
+Bot.prototype.postReaction = function(id, emoji, ts, params) {
+    params = extend({
+        channel: id,
+        name: emoji,
+        timestamp: ts
+    }, params || {});
+
+    return this._api('reactions.add', params);
+};
+
+/**
  * Preprocessing of params
  * @param params
  * @returns {object}
