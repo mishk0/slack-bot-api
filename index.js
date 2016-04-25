@@ -299,7 +299,7 @@ Bot.prototype.postTo = function(name, text, params, cb) {
  * @param {object} params
  * @returns {vow.Promise}
  */
-Bot.prototype.postReaction = function(id, emoji, ts, params) {
+Bot.prototype.postReactionToChannel = function(id, emoji, ts, params) {
     params = extend({
         channel: id,
         name: emoji,
@@ -317,7 +317,7 @@ Bot.prototype.postReaction = function(id, emoji, ts, params) {
  * @param {object} params
  * @returns {vow.Promise}
  */
-Bot.prototype.removeReaction = function(id, emoji, ts, params) {
+Bot.prototype.removeReactionFromChannel = function(id, emoji, ts, params) {
     params = extend({
         channel: id,
         name: emoji,
