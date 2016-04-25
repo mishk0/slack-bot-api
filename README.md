@@ -39,7 +39,7 @@ npm install slackbots
 - `postMessageToChannel(name, message [, params, callback])` (return: promise) - posts a message to channel by name.
 - `postReactionToChannel(channel, emoji, timestamp [, params, callback])` (return: promise) - posts a reaction (emoji) to a channel's message by timestamp.
 - `removeReactionFromChannel(channel, emoji, timestamp [, params, callback])` (return: promise) - removes a reaction (emoji) from a channel's message by timestamp
-- `getReactions(channel, emoji, timestamp [, params, callback])` (return: promise) - returns a list of all reactions for a message (specified by timestamp)
+- `getReactions(channel, timestamp [, params, callback])` (return: promise) - returns a list of all reactions for a message (specified by timestamp)
 - `listReactions(user [, params, callback])` (return: promise) - returns a list of all items reacted to by a user.
 
 ## Usage
