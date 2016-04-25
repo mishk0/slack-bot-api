@@ -19,6 +19,9 @@ npm install slackbots
 - `message` - event fired, when something happens in Slack. Description of all events <a href="https://api.slack.com/rtm">here</a>,
 - `open` - websocket connection is open and ready to communicate,
 - `close` - websocket connection is closed.
+- `on_[event name]` - all events described on <a href="https://api.slack.com/rtm">slack api</a> are available as `[event name]`
+- `on_[event name]:[subtype]` - for listen the events include subtype, <a href="https://api.slack.com/events/message">example</a>
+- `on_[event name];` - for listen the events without subtype
 
 ### Methods
 
@@ -75,6 +78,32 @@ PROFIT!
 bot.on('message', function(data) {
     // all ingoing events https://api.slack.com/rtm
     console.log(data);
+});
+```
+
+Listen `user_typing` event name as in Slack RTM API documentation
+
+```js
+bot.on("on_user_typing", function(data) {
+    console.log(data);
+});
+```
+
+Listen `message` event of bot's message
+
+```js
+bot.on("on_message:bot_message", function(data) {
+    console.log(data);
+});
+```
+
+The `on_message` event also include messages which post by Bot.  
+It can be define by `subtype` of the return message.  
+To avoid the loop effect we can listen pure `on_message` which without any `subtype`, by end the event name with `;` 
+
+```js
+bot.on("on_message;", function(data) {
+    console.log(data.subtype) // undefined;
 });
 ```
 

@@ -59,10 +59,19 @@ Bot.prototype.connect = function() {
 
     this.ws.on('message', function(data) {
         try {
-            this.emit('message', JSON.parse(data));
+            data = JSON.parse(data);
         } catch (e) {
             console.log(e);
         }
+
+        if (data.subtype) {
+            this.emit("on_" + data.type + ":" + data.subtype, data);
+        } else {
+            this.emit("on_" + data.type + ";", data);
+        }
+
+        this.emit("on_" + data.type, data);
+        this.emit("message", data);
     }.bind(this));
 };
 
