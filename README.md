@@ -41,7 +41,7 @@ npm install slackbots
 - `removeReaction(channel, emoji, timestamp [, params, callback])` (return: promise) - removes a reaction (emoji) from a channel's message by timestamp
 - `getReactions(channel, emoji, timestamp [, params, callback])` (return: promise) - returns a list of all reactions for a message (specified by timestamp)
 - `listReactions(user [, params, callback])` (return: promise) - returns a list of all items reacted to by a user.
-- 
+
 ## Usage
 ```js
 var SlackBot = require('slackbots');
