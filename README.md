@@ -37,7 +37,7 @@ npm install slackbots
 - `postMessageToUser(name, message [, params, callback])` (return: promise) - posts a direct message by user name,
 - `postMessageToGroup(name, message [, params, callback])` (return: promise) - posts a message to private group by name,
 - `postMessageToChannel(name, message [, params, callback])` (return: promise) - posts a message to channel by name.
-
+- `postReaction(channel, emoji, timestamp [, params, callback])` (return: promise) - posts a reaction to channel's message by timestamp.
 
 ## Usage
 ```js
