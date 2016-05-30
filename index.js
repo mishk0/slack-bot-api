@@ -112,6 +112,12 @@ Bot.prototype.getUser = function(name) {
     });
 };
 
+Bot.prototype.getUserById = function(id) {
+    return this.getUsers().then(function(data) {
+        return find(data.members, {"id": id });
+    });
+};
+
 /**
  * Get channel by name
  * @param {string} name
