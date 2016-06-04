@@ -19,6 +19,7 @@ npm install slackbots
 - `message` - event fired, when something happens in Slack. Description of all events <a href="https://api.slack.com/rtm">here</a>,
 - `open` - websocket connection is open and ready to communicate,
 - `close` - websocket connection is closed.
+- `error` - an error occurred while connecting to Slack
 
 ### Methods
 
