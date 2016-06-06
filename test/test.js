@@ -193,4 +193,47 @@ describe('slack-bot-api', function() {
         });
     });
 
+    describe('#getXyzById', function() {
+        beforeEach(function() {
+            sinon.stub(bot, 'getChannels');
+            sinon.stub(bot, 'getUsers');
+            sinon.stub(bot, 'getGroups');
+        });
+
+        afterEach(function() {
+            bot.getChannels.restore();
+            bot.getUsers.restore();
+            bot.getGroups.restore();
+        });
+
+        it('Channel', function(cb) {
+            bot.getChannels.returns(vow.fulfill({channels: [{name: 'name1', id: 'C12345678', is_channel: true}]}));
+
+            bot.getChannelById('C12345678').then(function(channel) {
+                expect(channel).to.be.ok;
+                expect(channel.name).to.equal('name1');
+                cb();
+            });
+        });
+
+        it('User', function(cb) {
+            bot.getUsers.returns(vow.fulfill({members: [{name: 'name1', id: 'U12345678'}]}));
+
+            bot.getUserById('U12345678').then(function(user) {
+                expect(user).to.be.ok;
+                expect(user.name).to.equal('name1');
+                cb();
+            });
+        });
+
+        it('Group', function(cb) {
+            bot.getGroups.returns(vow.fulfill({groups: [{name: 'name1', id: 'G12345678', is_group: true}]}));
+
+            bot.getGroupById('G12345678').then(function(group) {
+                expect(group).to.be.ok;
+                expect(group.name).to.equal('name1');
+                cb();
+            });
+        });
+    });
 });

@@ -135,6 +135,39 @@ Bot.prototype.getGroup = function(name) {
 };
 
 /**
+ * Get user by id
+ * @param {string} id
+ * @returns {object}
+ */
+Bot.prototype.getUserById = function(id) {
+    return this.getUsers().then(function(data) {
+        return find(data.members, { id: id });
+    });
+};
+
+/**
+ * Get channel by id
+ * @param {string} id
+ * @returns {object}
+ */
+Bot.prototype.getChannelById = function(id) {
+    return this.getChannels().then(function(data) {
+        return find(data.channels, { id: id });
+    });
+};
+
+/**
+ * Get group by id
+ * @param {string} id
+ * @returns {object}
+ */
+Bot.prototype.getGroupById = function(id) {
+    return this.getGroups().then(function(data) {
+        return find(data.groups, { id: id });
+    });
+};
+
+/**
  * Get channel ID
  * @param {string} name
  * @returns {string}
