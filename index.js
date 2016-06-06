@@ -248,7 +248,7 @@ Bot.prototype.updateMessage = function(id, ts, text, params) {
     }, params || {});
 
     return this._api('chat.update', params);
-}
+};
 
 /**
  * Posts a message to user by name
