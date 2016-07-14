@@ -251,7 +251,7 @@ Bot.prototype.postMessage = function(id, text, params) {
  * @returns {vow.Promise}
  */
 Bot.prototype.postMessageToUser = function(name, text, params, cb) {
-    return this._post(params.slackbot ? 'slackbot' : 'user', name, text, params, cb);
+    return this._post((params || {}).slackbot ? 'slackbot' : 'user', name, text, params, cb);
 };
 
 /**
