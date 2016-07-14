@@ -190,6 +190,17 @@ Bot.prototype.getGroupId = function(name) {
 };
 
 /**
+ * Get user ID
+ * @param {string} name
+ * @returns {string}
+ */
+Bot.prototype.getUserId = function(name) {
+    return this.getUser(name).then(function(user) {
+        return user.id;
+    });
+};
+
+/**
  * Get "direct message" channel ID
  * @param {string} name
  * @returns {vow.Promise}
@@ -240,7 +251,7 @@ Bot.prototype.postMessage = function(id, text, params) {
  * @returns {vow.Promise}
  */
 Bot.prototype.postMessageToUser = function(name, text, params, cb) {
-    return this._post('user', name, text, params, cb);
+    return this._post(params.slackbot ? 'slackbot' : 'user', name, text, params, cb);
 };
 
 /**
@@ -281,7 +292,8 @@ Bot.prototype._post = function(type, name, text, params, cb) {
     var method = ({
         'group': 'getGroupId',
         'channel': 'getChannelId',
-        'user': 'getChatId'
+        'user': 'getChatId',
+        'slackbot': 'getUserId'
     })[type];
 
     if (typeof params === 'function') {
