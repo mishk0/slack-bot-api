@@ -34,6 +34,7 @@ npm install slackbots
 - `getUserId(name)` (return: promise) - gets user ID by name,
 - `getChatId(name)` (return: promise) - it returns or opens and returns a direct message channel ID,
 - `postMessage(id, text, params)` (return: promise) - posts a message to channel | group | user by ID,
+- `updateMessage(channelId, timestamp, text, params)` (return: promise) - updates a message in a channel,
 - `postTo(name, message [, params, callback])` (return: promise) - posts a message to channel | group | user by name,
 - `postMessageToUser(name, message [, params, callback])` (return: promise) - posts a direct message by user name,
 - `postMessageToGroup(name, message [, params, callback])` (return: promise) - posts a message to private group by name,
