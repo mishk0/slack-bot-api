@@ -243,6 +243,25 @@ Bot.prototype.postMessage = function(id, text, params) {
 };
 
 /**
+ * Updates a message by timestamp
+ * @param {string} id - channel ID
+ * @param {string} ts - timestamp
+ * @param {string} text
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
+Bot.prototype.updateMessage = function(id, ts, text, params) {
+    params = extend({
+        ts: ts,
+        channel: id,
+        username: this.name,
+        text: text
+    }, params || {});
+
+    return this._api('chat.update', params);
+};
+
+/**
  * Posts a message to user by name
  * @param {string} name
  * @param {string} text
