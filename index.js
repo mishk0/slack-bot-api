@@ -356,6 +356,72 @@ Bot.prototype.postTo = function(name, text, params, cb) {
 };
 
 /**
+ * Posts a reaction (emoji) to a message by timestamp
+ * @param {string} id - channel ID
+ * @param {string} emoji - emoji string (without the : symbols)
+ * @param {string} ts - timestamp of the message you want to react to
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
+Bot.prototype.postReactionToChannel = function(id, emoji, ts, params) {
+    params = extend({
+        channel: id,
+        name: emoji,
+        timestamp: ts
+    }, params || {});
+
+    return this._api('reactions.add', params);
+};
+
+/**
+ * Removes a reaction (emoji) by timestamp
+ * @param {string} id - channel ID
+ * @param {string} emoji - emoji string (without the : symbols)
+ * @param {string} ts - timestamp of the message you want to react to
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
+Bot.prototype.removeReactionFromChannel = function(id, emoji, ts, params) {
+    params = extend({
+        channel: id,
+        name: emoji,
+        timestamp: ts
+    }, params || {});
+
+    return this._api('reactions.remove', params);
+};
+
+/**
+ * Returns a list of all reactions for a message (specified by timestamp)
+ * @param {string} id - channel ID
+ * @param {string} ts - timestamp of the message
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
+Bot.prototype.getReactions = function(id, ts, params) {
+    params = extend({
+        channel: id,
+        timestamp: ts
+    }, params || {});
+
+    return this._api('reactions.get', params);
+};
+
+/**
+ * Returns a list of all items reacted to by a user
+ * @param {string} id - user ID
+ * @param {object} params
+ * @returns {vow.Promise}
+ */
+Bot.prototype.listReactions = function(id, ts, params) {
+    params = extend({
+        user: id
+    }, params || {});
+
+    return this._api('reactions.list', params);
+};
+
+/**
  * Preprocessing of params
  * @param params
  * @returns {object}
