@@ -66,6 +66,11 @@ bot.on('start', function() {
     // If you add a 'slackbot' property, 
     // you will post to another user's slackbot channel instead of a direct message
     bot.postMessageToUser('user_name', 'meow!', { 'slackbot': true, icon_emoji: ':cat:' }); 
+
+    // If you add a 'id' property, 
+    // you will post to user's channel by their user id
+    // define existing userId instead of 'user_id'
+    bot.postMessageToUser('user_id', 'meow!', { 'id': true, icon_emoji: ':cat:' }); 
     
     // define private group instead of 'private_group', where bot exist
     bot.postMessageToGroup('private_group', 'meow!', params); 

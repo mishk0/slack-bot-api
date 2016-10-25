@@ -205,8 +205,19 @@ Bot.prototype.getUserId = function(name) {
  * @param {string} name
  * @returns {vow.Promise}
  */
-Bot.prototype.getChatId = function(name) {
+Bot.prototype.getChatIdByName = function(name) {
     return this.getUser(name).then(function(data) {
+
+        var chatId = find(this.ims, { user: data.id }).id;
+
+        return chatId || this.openIm(data.id);
+    }.bind(this)).then(function(data) {
+        return typeof data === 'string' ? data : data.channel.id;
+    });
+};
+
+Bot.prototype.getChatIdById = function(userId) {
+    return this.getUserById(userId).then(function(data) {
 
         var chatId = find(this.ims, { user: data.id }).id;
 
@@ -270,7 +281,7 @@ Bot.prototype.updateMessage = function(id, ts, text, params) {
  * @returns {vow.Promise}
  */
 Bot.prototype.postMessageToUser = function(name, text, params, cb) {
-    return this._post((params || {}).slackbot ? 'slackbot' : 'user', name, text, params, cb);
+    return this._post((params || {}).slackbot ? 'slackbot' : (params || {}).id ? 'userId' : 'user', name, text, params, cb);
 };
 
 /**
@@ -311,8 +322,9 @@ Bot.prototype._post = function(type, name, text, params, cb) {
     var method = ({
         'group': 'getGroupId',
         'channel': 'getChannelId',
-        'user': 'getChatId',
-        'slackbot': 'getUserId'
+        'user': 'getChatIdByName',
+        'slackbot': 'getUserId',
+        'userId': 'getChatIdById'
     })[type];
 
     if (typeof params === 'function') {
