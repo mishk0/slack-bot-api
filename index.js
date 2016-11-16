@@ -28,7 +28,7 @@ util.inherits(Bot, EventEmitter);
  */
 Bot.prototype.setCached = function (cached) {
     this.cached = cached;
-}
+};
 
 /**
  * Starts a Real Time Messaging API session
