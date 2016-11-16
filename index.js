@@ -13,6 +13,7 @@ var EventEmitter = require('events').EventEmitter;
  * @constructor
  */
 function Bot(params) {
+    this.cached = true;
     this.token = params.token;
     this.name = params.name;
 
@@ -21,6 +22,13 @@ function Bot(params) {
 }
 
 util.inherits(Bot, EventEmitter);
+
+/**
+ * Enable/Disable caching, useful to recover new channels/users/groups
+ */
+Bot.prototype.setCached = function (cached) {
+    this.cached = cached;
+};
 
 /**
  * Starts a Real Time Messaging API session
@@ -71,7 +79,7 @@ Bot.prototype.connect = function() {
  * @returns {vow.Promise}
  */
 Bot.prototype.getChannels = function() {
-    if (this.channels) {
+    if (this.cached && this.channels) {
         return Vow.fulfill({ channels: this.channels });
     }
     return this._api('channels.list');
@@ -82,10 +90,9 @@ Bot.prototype.getChannels = function() {
  * @returns {vow.Promise}
  */
 Bot.prototype.getUsers = function() {
-    if (this.users) {
+    if (this.cached && this.users) {
         return Vow.fulfill({ members: this.users });
     }
-
     return this._api('users.list');
 };
 
@@ -94,10 +101,9 @@ Bot.prototype.getUsers = function() {
  * @returns {vow.Promise}
  */
 Bot.prototype.getGroups = function() {
-    if (this.groups) {
+    if (this.cached && this.groups) {
         return Vow.fulfill({ groups: this.groups });
     }
-
     return this._api('groups.list');
 };
 
