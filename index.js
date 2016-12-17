@@ -209,7 +209,7 @@ class Bot extends EventEmitter {
         return this.getUsers().then(function(data) {
             return _.find(data.members, { profile: { email: email } });
         });
-    };
+    }
 
     /**
      * Get "direct message" channel ID

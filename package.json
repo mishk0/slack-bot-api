@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "./node_modules/jshint/bin/jshint libs/*.js index.js && ./node_modules/jscs/bin/jscs libs/*.js index.js && ./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/jshint/bin/jshint index.js && ./node_modules/jscs/bin/jscs index.js && ./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
     "extend": "^2.0.1",
