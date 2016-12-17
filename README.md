@@ -29,6 +29,7 @@ npm install slackbots
 - `getChannel(name)` (return: promise) - gets channel by name,
 - `getGroup(name)` (return: promise) - gets group by name,
 - `getUser(name)` (return: promise) - gets user by name,
+- `getUserByEmail(name)` (return: promise) - gets user by name,
 - `getChannelId(name)` (return: promise) - gets channel ID by name,
 - `getGroupId(name)` (return: promise) - gets group ID by name,
 - `getUserId(name)` (return: promise) - gets user ID by name,
