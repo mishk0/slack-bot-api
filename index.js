@@ -1,4 +1,5 @@
 'use strict';
+
 var request = require('request');
 var Vow = require('vow');
 var extend = require('extend');
@@ -8,14 +9,14 @@ var find = utils.find;
 var assert = utils.assert;
 var EventEmitter = require('events').EventEmitter;
 
-
-class Bot extends EventEmitter{
+class Bot extends EventEmitter {
     /**
      * @param {object} params
      * @constructor
      */
 
      constructor(params) {
+         super(params);
          this.token = params.token;
          this.name = params.name;
 
@@ -417,4 +418,5 @@ class Bot extends EventEmitter{
         });
     }
 }
+
 module.exports = Bot;
