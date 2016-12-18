@@ -1,6 +1,5 @@
 var chai = require('chai');
 var Bot = require('../index.js');
-var bot = new Bot({token: 'token'});
 var sinon = require('sinon');
 var vow = require('vow');
 var sinonChai = require('sinon-chai');
@@ -9,7 +8,13 @@ chai.use(sinonChai);
 var expect = require('chai').expect;
 var request = require('request');
 
-describe('slack-bot-api', function() {
+sinon.stub(Bot.prototype, 'login');
+
+describe('slack-this.bot-api', function() {
+    beforeEach(function() {
+        this.bot = new Bot({token: 'token'});
+    });
+
     describe('#_preprocessParams', function() {
         it('1', function() {
             var input = {
@@ -25,7 +30,7 @@ describe('slack-bot-api', function() {
                 token: 'token'
             };
 
-            expect(bot._preprocessParams(input)).to.deep.equal(output);
+            expect(this.bot._preprocessParams(input)).to.deep.equal(output);
         });
 
         it('2', function() {
@@ -40,7 +45,7 @@ describe('slack-bot-api', function() {
                 token: 'token'
             };
 
-            expect(bot._preprocessParams(input)).to.deep.equal(output);
+            expect(this.bot._preprocessParams(input)).to.deep.equal(output);
         });
 
         it('3', function() {
@@ -57,7 +62,7 @@ describe('slack-bot-api', function() {
                 token: 'token'
             };
 
-            expect(bot._preprocessParams(input)).to.deep.equal(output);
+            expect(this.bot._preprocessParams(input)).to.deep.equal(output);
         });
     });
 
@@ -75,7 +80,7 @@ describe('slack-bot-api', function() {
                 cb(null, null, '{}');
             });
 
-            bot._api('method', {foo: 1, bar: 2, baz: 3}).always(function() {
+            this.bot._api('method', {foo: 1, bar: 2, baz: 3}).always(function() {
                 expect(r1).to.deep.equal(
                     {
                         url: 'https://slack.com/api/method',
@@ -96,7 +101,7 @@ describe('slack-bot-api', function() {
                 cb(null, null, "{\"ok\": true}");
             });
 
-            bot._api('method',  {foo: 1, bar: 2, baz: 3}).then(function(data) {
+            this.bot._api('method',  {foo: 1, bar: 2, baz: 3}).then(function(data) {
                 expect(data.ok).to.equal(true);
                 done();
             })
@@ -107,7 +112,7 @@ describe('slack-bot-api', function() {
                 cb(null, null, "{\"ok\": false}");
             });
 
-            bot._api('method').fail(function(data) {
+            this.bot._api('method').fail(function(data) {
                 expect(data.ok).to.equal(false);
                 done();
             })
@@ -116,55 +121,55 @@ describe('slack-bot-api', function() {
 
     describe('#postTo', function() {
         beforeEach(function() {
-            sinon.stub(bot, 'getChannels');
-            sinon.stub(bot, 'getUsers');
-            sinon.stub(bot, 'getGroups');
+            sinon.stub(this.bot, 'getChannels');
+            sinon.stub(this.bot, 'getUsers');
+            sinon.stub(this.bot, 'getGroups');
 
         });
 
         afterEach(function() {
-            bot.getChannels.restore();
-            bot.getUsers.restore();
-            bot.getGroups.restore();
+            this.bot.getChannels.restore();
+            this.bot.getUsers.restore();
+            this.bot.getGroups.restore();
         });
 
         it('1', function(cb) {
-            bot.getChannels.returns(vow.fulfill({channels: [{name: 'name1', is_channel: true}]}));
-            bot.getUsers.returns(vow.fulfill({members: []}));
-            bot.getGroups.returns(vow.fulfill({groups: []}));
-            sinon.stub(bot, 'postMessageToChannel').returns(vow.fulfill());
+            this.bot.getChannels.returns(vow.fulfill({channels: [{name: 'name1', is_channel: true}]}));
+            this.bot.getUsers.returns(vow.fulfill({members: []}));
+            this.bot.getGroups.returns(vow.fulfill({groups: []}));
+            sinon.stub(this.bot, 'postMessageToChannel').returns(vow.fulfill());
 
-            bot.postTo('name1', 'text').then(function() {
-                expect(bot.postMessageToChannel).to.have.callCount(1);
-                expect(bot.postMessageToChannel).to.have.been.calledWith('name1', 'text');
+            this.bot.postTo('name1', 'text').then(() => {
+                expect(this.bot.postMessageToChannel).to.have.callCount(1);
+                expect(this.bot.postMessageToChannel).to.have.been.calledWith('name1', 'text');
                 cb();
             });
 
         });
 
         it('2', function(cb) {
-            bot.getChannels.returns(vow.fulfill({channels: []}));
-            bot.getUsers.returns(vow.fulfill({members: [{name: 'name1'}]}));
-            bot.getGroups.returns(vow.fulfill({groups: []}));
-            sinon.stub(bot, 'postMessageToUser').returns(vow.fulfill());
+            this.bot.getChannels.returns(vow.fulfill({channels: []}));
+            this.bot.getUsers.returns(vow.fulfill({members: [{name: 'name1'}]}));
+            this.bot.getGroups.returns(vow.fulfill({groups: []}));
+            sinon.stub(this.bot, 'postMessageToUser').returns(vow.fulfill());
 
-            bot.postTo('name1', 'text').then(function() {
-                expect(bot.postMessageToUser).to.have.callCount(1);
-                expect(bot.postMessageToUser).to.have.been.calledWith('name1', 'text');
+            this.bot.postTo('name1', 'text').then(() => {
+                expect(this.bot.postMessageToUser).to.have.callCount(1);
+                expect(this.bot.postMessageToUser).to.have.been.calledWith('name1', 'text');
                 cb();
             });
 
         });
 
         it('3', function(cb) {
-            bot.getChannels.returns(vow.fulfill({channels: []}));
-            bot.getUsers.returns(vow.fulfill({members: []}));
-            bot.getGroups.returns(vow.fulfill({groups: [{name: 'name1', is_group: true}]}));
-            sinon.stub(bot, 'postMessageToGroup').returns(vow.fulfill());
+            this.bot.getChannels.returns(vow.fulfill({channels: []}));
+            this.bot.getUsers.returns(vow.fulfill({members: []}));
+            this.bot.getGroups.returns(vow.fulfill({groups: [{name: 'name1', is_group: true}]}));
+            sinon.stub(this.bot, 'postMessageToGroup').returns(vow.fulfill());
 
-            bot.postTo('name1', 'text').then(function() {
-                expect(bot.postMessageToGroup).to.have.callCount(1);
-                expect(bot.postMessageToGroup).to.have.been.calledWith('name1', 'text');
+            this.bot.postTo('name1', 'text').then(() => {
+                expect(this.bot.postMessageToGroup).to.have.callCount(1);
+                expect(this.bot.postMessageToGroup).to.have.been.calledWith('name1', 'text');
                 cb();
             });
 
@@ -173,21 +178,21 @@ describe('slack-bot-api', function() {
 
     describe('#getXyzById', function() {
         beforeEach(function() {
-            sinon.stub(bot, 'getChannels');
-            sinon.stub(bot, 'getUsers');
-            sinon.stub(bot, 'getGroups');
+            sinon.stub(this.bot, 'getChannels');
+            sinon.stub(this.bot, 'getUsers');
+            sinon.stub(this.bot, 'getGroups');
         });
 
         afterEach(function() {
-            bot.getChannels.restore();
-            bot.getUsers.restore();
-            bot.getGroups.restore();
+            this.bot.getChannels.restore();
+            this.bot.getUsers.restore();
+            this.bot.getGroups.restore();
         });
 
         it('Channel', function(cb) {
-            bot.getChannels.returns(vow.fulfill({channels: [{name: 'name1', id: 'C12345678', is_channel: true}]}));
+            this.bot.getChannels.returns(vow.fulfill({channels: [{name: 'name1', id: 'C12345678', is_channel: true}]}));
 
-            bot.getChannelById('C12345678').then(function(channel) {
+            this.bot.getChannelById('C12345678').then(function(channel) {
                 expect(channel).to.be.ok;
                 expect(channel.name).to.equal('name1');
                 cb();
@@ -195,9 +200,9 @@ describe('slack-bot-api', function() {
         });
 
         it('User', function(cb) {
-            bot.getUsers.returns(vow.fulfill({members: [{name: 'name1', id: 'U12345678'}]}));
+            this.bot.getUsers.returns(vow.fulfill({members: [{name: 'name1', id: 'U12345678'}]}));
 
-            bot.getUserById('U12345678').then(function(user) {
+            this.bot.getUserById('U12345678').then(function(user) {
                 expect(user).to.be.ok;
                 expect(user.name).to.equal('name1');
                 cb();
@@ -205,9 +210,9 @@ describe('slack-bot-api', function() {
         });
 
         it('Group', function(cb) {
-            bot.getGroups.returns(vow.fulfill({groups: [{name: 'name1', id: 'G12345678', is_group: true}]}));
+            this.bot.getGroups.returns(vow.fulfill({groups: [{name: 'name1', id: 'G12345678', is_group: true}]}));
 
-            bot.getGroupById('G12345678').then(function(group) {
+            this.bot.getGroupById('G12345678').then(function(group) {
                 expect(group).to.be.ok;
                 expect(group.name).to.equal('name1');
                 cb();
