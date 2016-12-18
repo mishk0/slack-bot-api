@@ -1,6 +1,6 @@
 {
   "name": "slackbots",
-  "version": "0.5.3",
+  "version": "1.0.1",
   "description": "Simple API for Slack",
   "main": "index.js",
   "author": {
