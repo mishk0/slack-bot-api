@@ -108,7 +108,10 @@ class Bot extends EventEmitter {
      */
     getUser(name) {
         return this.getUsers().then(function(data) {
-            return _.find(data.members, { name: name }) || {};
+            var res = _.find(data.members, { name: name });
+
+            console.assert(res, 'user not found');
+            return res;
         });
     }
 
@@ -119,7 +122,10 @@ class Bot extends EventEmitter {
      */
     getChannel(name) {
         return this.getChannels().then(function(data) {
-            return _.find(data.channels, { name: name }) || {};
+            var res = _.find(data.channels, { name: name });
+
+            console.assert(res, 'channel not found');
+            return res;
         });
     }
 
@@ -130,7 +136,10 @@ class Bot extends EventEmitter {
      */
     getGroup(name) {
         return this.getGroups().then(function(data) {
-            return _.find(data.groups, { name: name }) || {};
+            var res = _.find(data.groups, { name: name });
+
+            console.assert(res, 'group not found');
+            return res;
         });
     }
 
@@ -141,7 +150,10 @@ class Bot extends EventEmitter {
      */
     getUserById(id) {
         return this.getUsers().then(function(data) {
-            return _.find(data.members, { id: id }) || {};
+            var res = _.find(data.members, { id: id });
+
+            console.assert(res, 'user not found');
+            return res;
         });
     }
 
@@ -152,7 +164,10 @@ class Bot extends EventEmitter {
       */
     getChannelById(id) {
         return this.getChannels().then(function(data) {
-            return _.find(data.channels, { id: id }) || {};
+            var res = _.find(data.channels, { id: id });
+
+            console.assert(res, 'channel not found');
+            return res;
         });
     }
 
@@ -163,7 +178,10 @@ class Bot extends EventEmitter {
      */
     getGroupById(id) {
         return this.getGroups().then(function(data) {
-            return _.find(data.groups, { id: id }) || {};
+            var res = _.find(data.groups, { id: id });
+
+            console.assert(res, 'group not found');
+            return res;
         });
     }
 
