@@ -255,7 +255,7 @@ class Bot extends EventEmitter {
     }
 
     /**
-     * Get the channel history
+     * Get the channel history by channel name
      * @param {string} channel
      * @returns {string}
      */

@@ -31,6 +31,7 @@ npm install slackbots
 - `getUser(name)` (return: promise) - gets user by name,
 - `getUserByEmail(name)` (return: promise) - gets user by name,
 - `getChannelId(name)` (return: promise) - gets channel ID by name,
+- `getChannelHistory(name)` (return: promise) - gets channel history by name,
 - `getGroupId(name)` (return: promise) - gets group ID by name,
 - `getUserId(name)` (return: promise) - gets user ID by name,
 - `getChatId(name)` (return: promise) - it returns or opens and returns a direct message channel ID,
@@ -48,7 +49,7 @@ var SlackBot = require('slackbots');
 
 // create a bot
 var bot = new SlackBot({
-    token: 'xoxb-012345678-ABC1DFG2HIJ3', // Add a bot https://my.slack.com/services/new/bot and put the token 
+    token: 'xoxb-012345678-ABC1DFG2HIJ3', // Add a bot https://my.slack.com/services/new/bot and put the token
     name: 'My Bot'
 });
 
@@ -57,19 +58,19 @@ bot.on('start', function() {
     var params = {
         icon_emoji: ':cat:'
     };
-    
-    // define channel, where bot exist. You can adjust it there https://my.slack.com/services 
+
+    // define channel, where bot exist. You can adjust it there https://my.slack.com/services
     bot.postMessageToChannel('general', 'meow!', params);
-    
+
     // define existing username instead of 'user_name'
-    bot.postMessageToUser('user_name', 'meow!', params); 
-    
-    // If you add a 'slackbot' property, 
+    bot.postMessageToUser('user_name', 'meow!', params);
+
+    // If you add a 'slackbot' property,
     // you will post to another user's slackbot channel instead of a direct message
-    bot.postMessageToUser('user_name', 'meow!', { 'slackbot': true, icon_emoji: ':cat:' }); 
-    
+    bot.postMessageToUser('user_name', 'meow!', { 'slackbot': true, icon_emoji: ':cat:' });
+
     // define private group instead of 'private_group', where bot exist
-    bot.postMessageToGroup('private_group', 'meow!', params); 
+    bot.postMessageToGroup('private_group', 'meow!', params);
 });
 ```
 PROFIT!
@@ -112,4 +113,3 @@ bot.postMessageToUser('user', 'hi').always(function(data) {
     // ...
 })
 ```
-
