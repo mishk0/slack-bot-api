@@ -369,6 +369,8 @@ class Bot extends EventEmitter {
     postTo(name, text, params, cb) {
         return Vow.all([this.getChannels(), this.getUsers(), this.getGroups()]).then(function(data) {
 
+            name = this._cleanName(name);
+
             var all = [].concat(data[0].channels, data[1].members, data[2].groups);
             var result = _.find(all, {name: name});
 
@@ -382,6 +384,18 @@ class Bot extends EventEmitter {
                 return this.postMessageToUser(name, text, params, cb);
             }
         }.bind(this));
+    }
+
+    _cleanName (name) {
+        if (name == undefined || name.lenght == 0) {
+            return name;
+        }
+
+        var firstCharacter = name[0];
+        if (firstCharacter == '#' || firstCharacter == '@') {
+            name = name.substring(1, name.lenght);
+        }
+        return name;
     }
 
     /**
