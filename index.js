@@ -387,12 +387,12 @@ class Bot extends EventEmitter {
     }
 
     _cleanName (name) {
-        if (name == undefined || name.lenght == 0) {
+        if (name === undefined || name.lenght === 0) {
             return name;
         }
 
         var firstCharacter = name[0];
-        if (firstCharacter == '#' || firstCharacter == '@') {
+        if (firstCharacter === '#' || firstCharacter === '@') {
             name = name.substring(1, name.lenght);
         }
         return name;
