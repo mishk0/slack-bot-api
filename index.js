@@ -386,6 +386,11 @@ class Bot extends EventEmitter {
         }.bind(this));
     }
 
+    /**
+     * Remove @ or # character from group | channel | user name
+     * @param {string} name
+     * @returns {string}
+     */
     _cleanName (name) {
         if (name === undefined || name.lenght === 0) {
             return name;
