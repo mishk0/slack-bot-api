@@ -243,6 +243,13 @@ describe('slack-this.bot-api', function() {
 
             expect(this.bot._cleanName(input)).to.deep.equal(output);
         });
+
+        it('Middle with #', function() {
+            var input = 'gen#eral';
+            var output = 'gen#eral';
+
+            expect(this.bot._cleanName(input)).to.deep.equal(output);
+        });
     });
 
 });
