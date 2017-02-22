@@ -392,7 +392,7 @@ class Bot extends EventEmitter {
      * @returns {string}
      */
     _cleanName (name) {
-        if (typeof name === undefined || typeof name !== 'string') {
+        if (typeof name !== 'string') {
             return name;
         }
 
