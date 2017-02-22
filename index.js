@@ -369,6 +369,8 @@ class Bot extends EventEmitter {
     postTo(name, text, params, cb) {
         return Vow.all([this.getChannels(), this.getUsers(), this.getGroups()]).then(function(data) {
 
+            name = this._cleanName(name);
+
             var all = [].concat(data[0].channels, data[1].members, data[2].groups);
             var result = _.find(all, {name: name});
 
@@ -382,6 +384,23 @@ class Bot extends EventEmitter {
                 return this.postMessageToUser(name, text, params, cb);
             }
         }.bind(this));
+    }
+
+    /**
+     * Remove @ or # character from group | channel | user name
+     * @param {string} name
+     * @returns {string}
+     */
+    _cleanName (name) {
+        if (typeof name !== 'string') {
+            return name;
+        }
+
+        var firstCharacter = name.charAt(0);
+        if (firstCharacter === '#' || firstCharacter === '@') {
+            name = name.slice(1);
+        }
+        return name;
     }
 
     /**
