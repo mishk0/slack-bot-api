@@ -255,6 +255,15 @@ class Bot extends EventEmitter {
     }
 
     /**
+     * Get the channel history by channel name
+     * @param {string} channel
+     * @returns {string}
+     */
+    getChannelHistory (channel) {
+        return this._api('channels.history', { channel: channel });
+    }
+
+    /**
      * Posts a message to a channel by ID
      * @param {string} id - channel ID
      * @param {string} text
