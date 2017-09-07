@@ -266,7 +266,7 @@ class Bot extends EventEmitter {
         params = extend({
             text: text,
             channel: id,
-            user: userId,
+            user: user,
             username: this.name
         }, params || {});
 
