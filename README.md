@@ -34,6 +34,7 @@ npm install slackbots
 - `getGroupId(name)` (return: promise) - gets group ID by name,
 - `getUserId(name)` (return: promise) - gets user ID by name,
 - `getChatId(name)` (return: promise) - it returns or opens and returns a direct message channel ID,
+- `postEphemeral(id, user, text, params)` (return: promise) - posts an ephemeral message to channel and user by ID,
 - `postMessage(id, text, params)` (return: promise) - posts a message to channel | group | user by ID,
 - `updateMessage(channelId, timestamp, text, params)` (return: promise) - updates a message in a channel,
 - `postTo(name, message [, params, callback])` (return: promise) - posts a message to channel | group | user by name,
