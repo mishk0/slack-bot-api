@@ -272,7 +272,7 @@ class Bot extends EventEmitter {
 
         return this._api('chat.postEphemeral', params);
     }
-    
+
     /**
      * Posts a message to a channel by ID
      * @param {string} id - channel ID
