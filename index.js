@@ -264,8 +264,8 @@ class Bot extends EventEmitter {
         }
         return this._api('im.list');
     }
-  
-    /**  
+
+    /**
      * Posts an ephemeral message to a channel and user
      * @param {string} id - channel ID
      * @param {string} user - user ID
