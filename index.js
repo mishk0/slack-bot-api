@@ -255,6 +255,25 @@ class Bot extends EventEmitter {
     }
 
     /**
+     * Posts an ephemeral message to a channel and user
+     * @param {string} id - channel ID
+     * @param {string} user - user ID
+     * @param {string} text
+     * @param {object} params
+     * @returns {vow.Promise}
+     */
+    postEphemeral(id, user, text, params) {
+        params = extend({
+            text: text,
+            channel: id,
+            user: user,
+            username: this.name
+        }, params || {});
+
+        return this._api('chat.postEphemeral', params);
+    }
+
+    /**
      * Posts a message to a channel by ID
      * @param {string} id - channel ID
      * @param {string} text
