@@ -255,6 +255,17 @@ class Bot extends EventEmitter {
     }
 
     /**
+     * Get a list of all im channels
+     * @returns {vow.Promise}
+     */
+    getImChannels() {
+        if (this.ims) {
+            return Vow.fulfill({ ims: this.ims });
+        }
+        return this._api('im.list');
+    }
+  
+    /**  
      * Posts an ephemeral message to a channel and user
      * @param {string} id - channel ID
      * @param {string} user - user ID

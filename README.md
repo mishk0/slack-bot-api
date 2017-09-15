@@ -26,6 +26,7 @@ npm install slackbots
 - `getChannels()` (return: promise) - returns a list of all channels in the team,
 - `getGroups()` (return: promise) - returns a list of all groups in the team,
 - `getUsers()` (return: promise) - returns a list of all users in the team,
+- `getImChannels()` (return: promise) - returns a list of bots direct message channels in the team,
 - `getChannel(name)` (return: promise) - gets channel by name,
 - `getGroup(name)` (return: promise) - gets group by name,
 - `getUser(name)` (return: promise) - gets user by name,
@@ -41,7 +42,7 @@ npm install slackbots
 - `postMessageToUser(name, message [, params, callback])` (return: promise) - posts a direct message by user name,
 - `postMessageToGroup(name, message [, params, callback])` (return: promise) - posts a message to private group by name,
 - `postMessageToChannel(name, message [, params, callback])` (return: promise) - posts a message to channel by name.
-
+- `openIm(userId)` (return: promise) - opens a direct message channel with another member in the team
 
 ## Usage
 ```js
