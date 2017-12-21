@@ -6,6 +6,7 @@ var Vow = require('vow');
 var extend = require('extend');
 var WebSocket = require('ws');
 var EventEmitter = require('events').EventEmitter;
+var { setWsHeartbeat } = require('ws-heartbeat/client');
 
 class Bot extends EventEmitter {
     /**
@@ -48,6 +49,8 @@ class Bot extends EventEmitter {
      */
      connect() {
          this.ws = new WebSocket(this.wsUrl);
+
+         setWsHeartbeat(this.ws, '{ "kind": "ping" }');
 
          this.ws.on('open', function(data) {
              this.emit('open', data);
