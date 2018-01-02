@@ -6,6 +6,8 @@ var Vow = require('vow');
 var extend = require('extend');
 var WebSocket = require('ws');
 var EventEmitter = require('events').EventEmitter;
+var HttpsProxyAgent = require('https-proxy-agent');
+var Url = require('url');
 
 class Bot extends EventEmitter {
     /**
@@ -19,6 +21,13 @@ class Bot extends EventEmitter {
          this.name = params.name;
 
          console.assert(params.token, 'token must be defined');
+
+         // Use a HTTP Proxy if defined in the environment. We need to accomodate both uppercase and lowercase environment definitions
+         this._agent = null;
+         if ((typeof process.env.http_proxy !== 'undefined' && process.env.http_proxy) || (typeof process.env.HTTP_PROXY !== 'undefined' && process.env.HTTP_PROXY)) {
+             this._agent = new HttpsProxyAgent(Url.parse(process.env.http_proxy || process.env.HTTP_PROXY));
+         }
+
          this.login();
      }
 
@@ -47,7 +56,7 @@ class Bot extends EventEmitter {
      * Establish a WebSocket connection
      */
      connect() {
-         this.ws = new WebSocket(this.wsUrl);
+         this.ws = new WebSocket(this.wsUrl, {agent: this._agent});
 
          this.ws.on('open', function(data) {
              this.emit('open', data);
