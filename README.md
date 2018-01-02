@@ -115,3 +115,7 @@ bot.postMessageToUser('user', 'hi').always(function(data) {
 })
 ```
 
+### HTTP Proxy Support
+
+This package can work behind a corporate proxy when the `HTTP_PROXY` environment variable is set,
+ie: `HTTP_PROXY=http://10.60.10.1:3128`
