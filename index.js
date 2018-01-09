@@ -22,10 +22,20 @@ class Bot extends EventEmitter {
 
          console.assert(params.token, 'token must be defined');
 
-         // Use a HTTP Proxy if defined in the environment. We need to accomodate both uppercase and lowercase environment definitions
+         // Use a HTTP Proxy if defined in the environment. We need to accommodate both uppercase and lowercase environment definitions
          this._agent = null;
          if ((typeof process.env.http_proxy !== 'undefined' && process.env.http_proxy) || (typeof process.env.HTTP_PROXY !== 'undefined' && process.env.HTTP_PROXY)) {
-             this._agent = new HttpsProxyAgent(Url.parse(process.env.http_proxy || process.env.HTTP_PROXY));
+             try {
+                 // Url.parse can throw it's own errors but strangely doesn't throw when the url is not really valid.
+                 var proxy_url_obj = Url.parse(process.env.http_proxy || process.env.HTTP_PROXY);
+                 if (!proxy_url_obj.hostname) {
+                     throw new Error('Invalid HTTP_PROXY environment variable value');
+                 }
+
+                 this._agent = new HttpsProxyAgent(proxy_url_obj);
+             } catch (err) {
+                console.log(err.message);
+             }
          }
 
          this.login();
