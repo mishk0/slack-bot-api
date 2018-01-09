@@ -22,22 +22,7 @@ class Bot extends EventEmitter {
 
          console.assert(params.token, 'token must be defined');
 
-         // Use a HTTP Proxy if defined in the environment. We need to accomodate both uppercase and lowercase environment definitions
-         this._agent = null;
-         if ((typeof process.env['http_proxy'] !== 'undefined' && process.env['http_proxy']) || (typeof process.env['HTTP_PROXY'] !== 'undefined' && process.env['HTTP_PROXY'])) {
-             try {
-                 // Url.parse can throw it's own errors but strangely doesn't throw when the url is not really valid.
-                 var proxyUrl = Url.parse(process.env['http_proxy'] || process.env['HTTP_PROXY']);
-                 if (!proxyUrl.hostname) {
-                     throw new Error('Invalid HTTP_PROXY environment variable value');
-                 }
-
-                 this._agent = new HttpsProxyAgent(proxyUrl);
-             } catch (e) {
-                 console.error(e);
-             }
-         }
-
+         this._configureProxy(params.proxy || undefined);
          this.login();
      }
 
@@ -511,6 +496,34 @@ class Bot extends EventEmitter {
                 }
             });
         });
+    }
+
+    /**
+     * Use a HTTP Proxy is supplied in the params of the custructor, otherwise look at the environment vars
+     * for proxy configuration. We need to accomodate both uppercase and lowercase environment definitions.
+     *
+     * @param {string} proxy
+     * @private
+     */
+    _configureProxy(proxy) {
+        if (!proxy && ((typeof process.env['http_proxy'] !== 'undefined' && process.env['http_proxy']) || (typeof process.env['HTTP_PROXY'] !== 'undefined' && process.env['HTTP_PROXY']))) {
+            proxy = process.env['http_proxy'] || process.env['HTTP_PROXY'];
+        }
+
+        this._agent = null;
+        if (proxy) {
+            try {
+                // Url.parse can throw it's own errors but strangely doesn't throw when the url is not really valid.
+                var proxyUrl = Url.parse(process.env['http_proxy'] || process.env['HTTP_PROXY']);
+                if (!proxyUrl.hostname) {
+                    throw new Error('Invalid HTTP_PROXY environment variable value');
+                }
+
+                this._agent = new HttpsProxyAgent(proxyUrl);
+            } catch (e) {
+                console.error(e);
+            }
+        }
     }
 }
 
