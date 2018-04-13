@@ -36,7 +36,7 @@ class Bot extends EventEmitter {
              this.groups = data.groups;
 
              this.connect();
-             
+
              this.emit('start');
          }).fail((data) => {
              this.emit('error', new Error(data.error ? data.error : data));
