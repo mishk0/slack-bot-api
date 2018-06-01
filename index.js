@@ -17,9 +17,12 @@ class Bot extends EventEmitter {
          super(params);
          this.token = params.token;
          this.name = params.name;
+         this.disconnect = params.disconnect;
 
          console.assert(params.token, 'token must be defined');
-         this.login();
+         if (!this.disconnect) {
+           this.login();
+         }
      }
 
     /**

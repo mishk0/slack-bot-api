@@ -13,6 +13,11 @@ It also exposes all opportunities of <a href="https://api.slack.com/rtm">Slack's
 npm install slackbots
 ```
 
+### Params
+- `token` (string) the slack token
+- `name` (string) the name of the bot
+- `disconnect` (boolean, defaults: `false`) whether to open websocket connection to listen to incoming messages, set to `true` for one time use
+
 ### Events
 
 - `start` - event fired, when Real Time Messaging API is started (via websocket),
