@@ -69,8 +69,8 @@ class Bot extends EventEmitter {
          }.bind(this));
          
          this.ws.on('goodbye', function(data) {
-            this.emit('goodbye', data)
-         })
+            this.emit('goodbye', data);
+         });
      }
 
     /**
