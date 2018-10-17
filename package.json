@@ -24,7 +24,8 @@
     "lodash": "^4.17.2",
     "request": "^2.56.0",
     "vow": "^0.4.9",
-    "ws": "^1.0.1"
+    "ws": "^1.0.1",
+    "ws-heartbeat": "^1.0.4"
   },
   "devDependencies": {
     "chai": "^2.3.0",
