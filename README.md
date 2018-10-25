@@ -91,6 +91,44 @@ bot.on('message', function(data) {
     console.log(data);
 });
 ```
+## Usage for catching 'silent disconnect'
+Creates bot and handles bot functionality. Simplest way to handle.
+```js
+let bot
+const startBot = () => {
+  bot = new SlackBot({
+    token: // bot token,
+    name: // app name
+  })
+  bot.on('start', err => {
+    if (err) {
+      // login function is what actually starts the RTM connection. set retry to 10 secs if connection fails
+      setTimeout(bot.login(), 10000)
+    }
+    // logs RTM connection success
+    logger.info(`bot has started successfully`)
+  })
+  bot.on('close', err => {
+    try {
+      // this will attempt to reconnect before failing the bot. Will also log the error that occurred.
+      if (err) {
+        // execute start function (includes creating bot again and refreshing RTM session
+        startBot()
+      }
+    } catch (err) {
+      // logs bot reconnect error
+      logger.error(`Bot crashed.. \n ${err}`)
+    }
+  })
+  bot.on('error', err => {
+    // handle error event
+  })
+  bot.on('message', async message => {
+    // handling message event
+  }
+}
+startBot()
+```
 
 ###Response Handler
 The simplest way for handling response is callback function, which is specified as a last argument:
