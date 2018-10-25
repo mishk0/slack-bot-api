@@ -120,12 +120,11 @@ const startBot = () => {
       logger.error(`Bot crashed.. \n ${err}`)
     }
   })
-  bot.on('error', err => {
-    // handle error event
-  })
-  bot.on('message', async message => {
-    // handling message event
-  }
+  
+  // any other bot event handler/functionality should be included in the start function.
+  .
+  .
+  .
 }
 startBot()
 ```
