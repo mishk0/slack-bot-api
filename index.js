@@ -497,6 +497,8 @@ class Bot extends EventEmitter {
                         if(body.error === 'ratelimited'){
                             body.retryAfter = request.headers['retry-after'];
                         }
+                        
+                        reject(body);
                     }
 
                 } catch (e) {
