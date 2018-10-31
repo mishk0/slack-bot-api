@@ -490,7 +490,13 @@ class Bot extends EventEmitter {
                     if (body.ok) {
                         resolve(body);
                     } else {
-                        reject(body);
+
+                    	// For a rate limit error, provide the retry-after value from the headers because why should the slack api be consistent or even make sense?
+						// I mean seriously, who thought it was a good idea to put something this useful in the headers rather than the
+						// body like everywhere else? Who hired that guy? SMH...
+                    	if(body.error === 'ratelimited'){
+                    		body.retryAfter = request.headers['retry-after'];
+						}
                     }
 
                 } catch (e) {
