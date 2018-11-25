@@ -423,6 +423,21 @@ class Bot extends EventEmitter {
     }
 
     /**
+     * Uploads a file to a channel by ID
+     * @param {string} id - channel ID
+     * @param {object} params
+     * @returns {vow.Promise}
+     */
+    filesUpload(id, params) {
+        params = extend({
+            channels: id,
+            username: this.name
+        }, params || {});
+
+        return this._api('files.upload', params);
+    }
+
+    /**
      * Remove @ or # character from group | channel | user name
      * @param {string} name
      * @returns {string}
