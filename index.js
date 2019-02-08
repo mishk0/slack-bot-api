@@ -230,7 +230,7 @@ class Bot extends EventEmitter {
      */
     getUserByEmail(email) {
         return this.getUsers().then(function(data) {
-            return data.members.find(member => user.profile.email === email);
+            return data.members.find(member => member.profile.email === email);
         });
     }
 
