@@ -1,6 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
 var request = require('request');
 var Vow = require('vow');
 var extend = require('extend');
@@ -114,7 +113,7 @@ class Bot extends EventEmitter {
      */
     getUser(name) {
         return this.getUsers().then(function(data) {
-            var res = _.find(data.members, { name: name });
+            var res = data.members.find(member => member.name === name);
 
             console.assert(res, 'user not found');
             return res;
@@ -128,7 +127,7 @@ class Bot extends EventEmitter {
      */
     getChannel(name) {
         return this.getChannels().then(function(data) {
-            var res = _.find(data.channels, { name: name });
+            var res = data.channels.find(channel => channel.name === name);
 
             console.assert(res, 'channel not found');
             return res;
@@ -142,7 +141,7 @@ class Bot extends EventEmitter {
      */
     getGroup(name) {
         return this.getGroups().then(function(data) {
-            var res = _.find(data.groups, { name: name });
+            var res = data.groups.find(group => group.name === name);
 
             console.assert(res, 'group not found');
             return res;
@@ -156,7 +155,7 @@ class Bot extends EventEmitter {
      */
     getUserById(id) {
         return this.getUsers().then(function(data) {
-            var res = _.find(data.members, { id: id });
+            var res = data.members.find(member => member.id === id);
 
             console.assert(res, 'user not found');
             return res;
@@ -170,7 +169,7 @@ class Bot extends EventEmitter {
       */
     getChannelById(id) {
         return this.getChannels().then(function(data) {
-            var res = _.find(data.channels, { id: id });
+            var res = data.channels.find(channel => channel.id === id);
 
             console.assert(res, 'channel not found');
             return res;
@@ -184,7 +183,7 @@ class Bot extends EventEmitter {
      */
     getGroupById(id) {
         return this.getGroups().then(function(data) {
-            var res = _.find(data.groups, { id: id });
+            var res = data.groups.find(group => group.id === id);
 
             console.assert(res, 'group not found');
             return res;
@@ -231,7 +230,7 @@ class Bot extends EventEmitter {
      */
     getUserByEmail(email) {
         return this.getUsers().then(function(data) {
-            return _.find(data.members, { profile: { email: email } });
+            return data.members.find(member => user.profile.email === email);
         });
     }
 
@@ -243,7 +242,7 @@ class Bot extends EventEmitter {
     getChatId(name) {
         return this.getUser(name).then(function(data) {
 
-            var chatId = _.find(this.ims, { user: data.id });
+            var chatId = this.ims.find(im => im.user === data.id);
 
             return (chatId && chatId.id) || this.openIm(data.id);
         }.bind(this)).then(function(data) {
@@ -408,7 +407,7 @@ class Bot extends EventEmitter {
             name = this._cleanName(name);
 
             var all = [].concat(data[0].channels, data[1].members, data[2].groups);
-            var result = _.find(all, {name: name});
+            var result = all.find(item => item.name === name);
 
             console.assert(result, 'wrong name');
 
