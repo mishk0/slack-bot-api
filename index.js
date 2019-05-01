@@ -18,6 +18,7 @@ class Bot extends EventEmitter {
          super(params);
          this.token = params.token;
          this.name = params.name;
+         this.no_ping = params.no_ping;
          this.disconnect = params.disconnect;
 
          console.assert(params.token, 'token must be defined');
@@ -52,8 +53,8 @@ class Bot extends EventEmitter {
      */
      connect() {
          this.ws = new WebSocket(this.wsUrl);
-
-         setWsHeartbeat(this.ws, '{ "kind": "ping" }');
+         if (! this.no_ping)
+         	setWsHeartbeat(this.ws, '{ "type": "ping" }');
 
          this.ws.on('open', function(data) {
              this.emit('open', data);
