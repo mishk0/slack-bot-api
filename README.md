@@ -92,7 +92,8 @@ bot.on('message', function(data) {
 });
 ```
 
-###Response Handler
+### Response Handler
+
 The simplest way for handling response is callback function, which is specified as a last argument:
 ```js
 bot.postMessageToUser('user1', 'hi', function(data) {/* ... */});
