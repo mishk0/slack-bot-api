@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "extend": "^3.0.2",
-    "jscodeshift": "^0.6.4",
     "lodash": "^4.17.15",
     "request": "^2.88.0",
     "vow": "^0.4.20",
