@@ -75,7 +75,7 @@ describe('slack-this.bot-api', function() {
         it('check url', function(done) {
             var r1;
 
-            sinon.stub(request, 'post', function(data, cb) {
+            sinon.stub(request, 'post').callsFake(function(data, cb) {
                 r1 = data;
                 cb(null, null, '{}');
             });
@@ -97,7 +97,7 @@ describe('slack-this.bot-api', function() {
         });
 
         it('response without error', function(done) {
-            sinon.stub(request, 'post', function(data, cb) {
+            sinon.stub(request, 'post').callsFake(function(data, cb) {
                 cb(null, null, "{\"ok\": true}");
             });
 
@@ -108,7 +108,7 @@ describe('slack-this.bot-api', function() {
         });
 
         it('response with error', function(done) {
-            sinon.stub(request, 'post', function(data, cb) {
+            sinon.stub(request, 'post').callsFake(function(data, cb) {
                 cb(null, null, "{\"ok\": false}");
             });
 

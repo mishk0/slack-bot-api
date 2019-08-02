@@ -42,6 +42,5 @@
     },
     "disallowSpacesInsideParentheses": true,
     "disallowMultipleLineBreaks": true,
-    "disallowNewlineBeforeBlockStatements": true,
-    "esnext": true
+    "disallowNewlineBeforeBlockStatements": true
 }

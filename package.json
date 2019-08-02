@@ -20,19 +20,19 @@
     "test": "./node_modules/jshint/bin/jshint index.js && ./node_modules/jscs/bin/jscs index.js && ./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
-    "extend": "^2.0.1",
-    "lodash": "^4.17.2",
-    "request": "^2.56.0",
-    "vow": "^0.4.9",
-    "ws": "^1.0.1",
-    "ws-heartbeat": "^1.0.4"
+    "extend": "^3.0.2",
+    "lodash": "^4.17.15",
+    "request": "^2.88.0",
+    "vow": "^0.4.20",
+    "ws": "^7.1.1",
+    "ws-heartbeat": "^1.1.0"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
-    "jscs": "^1.13.1",
-    "jshint": "^2.8.0",
-    "mocha": "^2.2.5",
-    "sinon": "^1.14.1",
-    "sinon-chai": "^2.8.0"
+    "chai": "^4.2.0",
+    "jscs": "^3.0.7",
+    "jshint": "^2.10.2",
+    "mocha": "^6.2.0",
+    "sinon": "^7.3.2",
+    "sinon-chai": "^3.3.0"
   }
 }
