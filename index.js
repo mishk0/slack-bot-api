@@ -78,8 +78,7 @@ class Bot extends EventEmitter {
      reconnect() {
         this._api('rtm.connect').then((data) => {
             this.wsUrl = data.url;
-            console.log(data)
-            this.connect()
+            this.connect();
         }).fail((data) => {
              this.emit('error', new Error(data.error ? data.error : data));
          }).done();
