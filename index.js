@@ -422,6 +422,73 @@ class Bot extends EventEmitter {
         }.bind(this));
     }
 
+
+    /**
+     * Posts a reaction (emoji) to a message by timestamp
+     * @param {string} id - channel ID
+     * @param {string} emoji - emoji string (without the : symbols)
+     * @param {string} ts - timestamp
+     * @param {object} params
+     * @returns {vow.Promise}
+     */
+    postReactionToChannel(id, emoji, ts, params) {
+        params = extend({
+            channel: id,
+            name: emoji,
+            timestamp: ts
+        }, params || {});
+
+        return this._api('reactions.add', params);
+    };
+
+    /**
+     * Removes a reaction (emoji) by timestamp
+     * @param {string} id - channel ID
+     * @param {string} emoji - emoji string (without the : symbols)
+     * @param {string} ts - timestamp
+     * @param {object} params
+     * @returns {vow.Promise}
+     */
+    removeReactionFromChannel(id, emoji, ts, params) {
+        params = extend({
+            channel: id,
+            name: emoji,
+            timestamp: ts
+        }, params || {});
+
+        return this._api('reactions.remove', params);
+    };
+
+    /**
+     * Returns a list of all reactions for a message by timestamp
+     * @param {string} id - channel ID
+     * @param {string} ts - timestamp of the message
+     * @param {object} params
+     * @returns {vow.Promise}
+     */
+    getReactions(id, ts, params) {
+        params = extend({
+            channel: id,
+            timestamp: ts
+        }, params || {});
+
+        return this._api('reactions.get', params);
+    };
+
+    /**
+     * Returns a list of all items reacted to by a user
+     * @param {string} id - user ID
+     * @param {object} params
+     * @returns {vow.Promise}
+     */
+    listReactions(id, ts, params) {
+        params = extend({
+            user: id
+        }, params || {});
+
+        return this._api('reactions.list', params);
+    };
+
     /**
      * Remove @ or # character from group | channel | user name
      * @param {string} name
