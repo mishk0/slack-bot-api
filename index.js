@@ -30,14 +30,10 @@ class Bot extends EventEmitter {
      * Starts a Real Time Messaging API session
      */
      login() {
-         this._api('rtm.start').then((data) => {
+         this._api('rtm.connect').then((data) => {
              this.wsUrl = data.url;
              this.self = data.self;
              this.team = data.team;
-             this.channels = data.channels;
-             this.users = data.users;
-             this.ims = data.ims;
-             this.groups = data.groups;
 
              this.emit('start');
 
@@ -80,7 +76,7 @@ class Bot extends EventEmitter {
          if (this.channels) {
              return Vow.fulfill({ channels: this.channels });
          }
-         return this._api('channels.list');
+         return this._api('conversations.list');
       }
 
     /**
@@ -104,7 +100,7 @@ class Bot extends EventEmitter {
             return Vow.fulfill({ groups: this.groups });
         }
 
-        return this._api('groups.list');
+        return this._api('usergroups.list');
     }
 
     /**
@@ -142,7 +138,7 @@ class Bot extends EventEmitter {
      */
     getGroup(name) {
         return this.getGroups().then(function(data) {
-            var res = _.find(data.groups, { name: name });
+            var res = _.find(data.usergroups, { name: name });
 
             console.assert(res, 'group not found');
             return res;
@@ -257,7 +253,7 @@ class Bot extends EventEmitter {
      * @returns {vow.Promise}
      */
     openIm(userId) {
-        return this._api('im.open', {user: userId});
+        return this._api('conversations.open', {users: userId});
     }
 
     /**
