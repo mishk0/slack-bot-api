@@ -48,6 +48,7 @@ npm install slackbots
 - `postMessageToGroup(name, message [, params, callback])` (return: promise) - posts a message to private group by name,
 - `postMessageToChannel(name, message [, params, callback])` (return: promise) - posts a message to channel by name.
 - `openIm(userId)` (return: promise) - opens a direct message channel with another member in the team
+- `reconnect()` - reconnects the slackbot to the slack channel after websocket connection times out
 
 ## Usage
 ```js
@@ -120,4 +121,3 @@ bot.postMessageToUser('user', 'hi').always(function(data) {
     // ...
 })
 ```
-

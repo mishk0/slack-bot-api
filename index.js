@@ -68,6 +68,18 @@ class Bot extends EventEmitter {
          }.bind(this));
      }
 
+     /**
+      * Reconnect to Real Time Messaging api after connection is dropped
+      */
+     reconnect() {
+        this._api('rtm.connect').then((data) => {
+            this.wsUrl = data.url;
+            this.connect();
+        }).fail((data) => {
+             this.emit('error', new Error(data.error ? data.error : data));
+         }).done();
+    }
+
     /**
      * Get channels
      * @returns {vow.Promise}
